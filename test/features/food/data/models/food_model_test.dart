@@ -1,9 +1,9 @@
-// FoodModel tests
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:proteam_app/features/food/data/models/food_model.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 
+// FoodModel tests
 void main() {
   late FoodModel testFoodModel;
 
@@ -50,7 +50,7 @@ void main() {
   test('should return a valid model from firebase snapshot', () async {
     // * Arrange
 
-    // Mock the firebase firestore to create a fake snapshot
+    // Use a firestore fake to create a fake snapshot
     final firestore = FakeFirebaseFirestore();
     final collection = firestore.collection('foods');
     const documentId = 'test_food_id';
