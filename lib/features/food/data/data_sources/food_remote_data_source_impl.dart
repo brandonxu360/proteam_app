@@ -8,7 +8,7 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
 
   FoodRemoteDataSourceImpl({required this.firebaseFirestore});
 
-  // Persist a food model
+  // Persist a food model in foods collection
   @override
   Future<void> createFood(FoodModel food) async {
     try {
@@ -19,18 +19,17 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
       await firebaseFirestore.collection('foods').add(foodMap);
     } catch (e) {
       // Handle any errors here
-      print('Error creating food: $e');
       throw Exception('Failed to create food');
     }
   }
 
+  // Delete a food model from food collection
   @override
   Future<void> deleteFood(FoodModel food) async {
     try {
       final querySnapshot = await firebaseFirestore
           .collection('foods')
           .where('name', isEqualTo: food.name)
-          .limit(1)
           .get();
       final doc = querySnapshot.docs.first;
       await doc.reference.delete();
