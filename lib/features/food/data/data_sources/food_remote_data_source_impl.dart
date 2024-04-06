@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proteam_app/features/food/data/data_sources/food_remote_data_source.dart';
 import 'package:proteam_app/features/food/data/models/food_model.dart';
+import 'package:proteam_app/core/const/firebase_collection_const.dart';
 
 class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
   // Instance of the firebase firestore that will be used to make the api calls
@@ -16,7 +17,7 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
       final foodMap = food.toDocument();
 
       // Add the food to the foods collection
-      await firebaseFirestore.collection('foods').add(foodMap);
+      await firebaseFirestore.collection(FirebaseCollectionConst.foods).add(foodMap);
     } catch (e) {
       // Handle any errors here
       throw Exception('Failed to create food');
@@ -28,7 +29,7 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
   Future<void> deleteFood(FoodModel food) async {
     try {
       final querySnapshot = await firebaseFirestore
-          .collection('foods')
+          .collection(FirebaseCollectionConst.foods)
           .where('name', isEqualTo: food.name)
           .get();
       final doc = querySnapshot.docs.first;
@@ -38,10 +39,11 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
     }
   }
 
+  // Get the list of persisted foods
   @override
   Future<List<FoodModel>> getFoods() async {
     try {
-      final querySnapshot = await firebaseFirestore.collection('foods').get();
+      final querySnapshot = await firebaseFirestore.collection(FirebaseCollectionConst.foods).get();
       return querySnapshot.docs
           .map((doc) => FoodModel.fromSnapshot(doc))
           .toList();
