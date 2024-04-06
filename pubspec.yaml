@@ -7,18 +7,19 @@ environment:
   sdk: '>=3.3.1 <4.0.0'
 
 dependencies:
+  cloud_firestore: ^4.16.0
   dartz: ^0.10.1
   equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
   get_it: ^7.6.8
+  mocktail: ^1.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
-  mockito:
 
 flutter:
   uses-material-design: true
