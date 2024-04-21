@@ -24,9 +24,17 @@ class FoodRepositoryImpl extends FoodRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteFood(FoodEntity food) {
-    // TODO: implement deleteFood
-    throw UnimplementedError();
+  Future<Either<Failure, void>> deleteFood(FoodEntity food) async {
+    try {
+      // Call the food remote data source to create a food
+      await foodRemoteDataSource.deleteFood(food);
+
+      // Return a completion future completion indicating success
+      return const Right(null);
+    } catch (e) {
+      // Return a failure on an error
+      return Left(ServerFailure());
+    }
   }
 
   @override
