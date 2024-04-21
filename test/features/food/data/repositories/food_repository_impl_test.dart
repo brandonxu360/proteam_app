@@ -152,7 +152,7 @@ void main() {
       when(() => foodRemoteDataSource.getFoods()).thenAnswer((_) async => []);
 
       // * Act
-      final result = foodRepositoryImpl.getFoods();
+      final result = await foodRepositoryImpl.getFoods();
 
       // * Assert
 
@@ -171,10 +171,10 @@ void main() {
 
       // Set up the mock remote data source interaction - mock a successful call -> exception thrown
       when(() => foodRemoteDataSource.getFoods())
-          .thenThrow((_) async => Exception('Failed to get foods'));
+          .thenThrow(Exception('Failed to get foods'));
 
       // * Act
-      final result = await foodRemoteDataSource.getFoods();
+      final result = await foodRepositoryImpl.getFoods();
 
       // * Assert
 
@@ -182,7 +182,7 @@ void main() {
       verify(() => foodRemoteDataSource.getFoods()).called(1);
 
       // Assert that a left value [ServerFailure] was returned
-      expect(result, equals(const Left(ServerFailure)));
+      expect(result, equals(Left(ServerFailure())));
     });
   });
 }

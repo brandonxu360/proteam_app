@@ -38,8 +38,16 @@ class FoodRepositoryImpl extends FoodRepository {
   }
 
   @override
-  Future<Either<Failure, List<FoodEntity>>> getFoods() {
-    // TODO: implement getFoods
-    throw UnimplementedError();
+  Future<Either<Failure, List<FoodEntity>>> getFoods() async {
+    try {
+      // Call the food remote data source to create a food
+      final foods = await foodRemoteDataSource.getFoods();
+
+      // Return the list of food entities
+      return Right(foods);
+    } catch (e) {
+      // Return a failure on an error
+      return Left(ServerFailure());
+    }
   }
 }
