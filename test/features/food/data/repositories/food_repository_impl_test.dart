@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:proteam_app/core/error/failures.dart';
 import 'package:proteam_app/features/food/data/data_sources/food_remote_data_source.dart';
-import 'package:proteam_app/features/food/data/models/food_model.dart';
 import 'package:proteam_app/features/food/data/repositories/food_repository_impl.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 
@@ -49,7 +48,7 @@ void main() {
 
   // createFood method unit tests
   group('createFood unit tests', () {
-    // Test the createFood method normal case - verify that it makes the expected call and returns the expected value
+    // Test the createFood method normal case - verify that it makes the expected call and returns the expected void completion
     test(
         'should call [RemoteDataSource.createFood] and complete successfully when the call to the remote source is successful',
         () async {
@@ -96,7 +95,7 @@ void main() {
 
   // deleteFood method unit tests
   group('deleteFood unit tests', () {
-    // Test the deleteFood method normal case - verify that it makes the expected call and returns the expected value
+    // Test the deleteFood method normal case - verify that it makes the expected call and returns the expected void completion
     test(
         'should call [RemoteDataSource.deleteFood] and complete successfully when the call to the remote source is successful',
         () async {
@@ -138,6 +137,52 @@ void main() {
 
       // Assert that a left value [ServerFailure] was returned
       expect(result, equals(Left(ServerFailure())));
+    });
+  });
+
+  // getFoods method unit tests
+  group('getFoods unit tests', () {
+    // Test the getFoods method normal case - verify that it makes the expected call and returns the expected list of [FoodEntity]
+    test(
+        'should call [RemoteDataSource.getFoods] and return a [List<FoodEntity] when the call to the remote source is successful',
+        () async {
+      // * Arrange
+
+      // Set up the mock remote data source interaction - mock a successful call -> future [List<FoodEntity>] completion
+      when(() => foodRemoteDataSource.getFoods()).thenAnswer((_) async => []);
+
+      // * Act
+      final result = foodRepositoryImpl.getFoods();
+
+      // * Assert
+
+      // Assert that the expected call [getFoods] in the remote data source was made exactly once
+      verify(() => foodRemoteDataSource.getFoods()).called(1);
+
+      // Assert that a list of food entities is returned
+      expect(result, isA<Right<dynamic, List<FoodEntity>>>());
+    });
+
+    // Test the getFoods exceptional case - verify that it makes the expected call and returns the expected failure object
+    test(
+        'should call [RemoteDataSource.getFoods] and return a [ServerFailure] when the call to the remote source is unsuccessful',
+        () async {
+      // * Arrange
+
+      // Set up the mock remote data source interaction - mock a successful call -> exception thrown
+      when(() => foodRemoteDataSource.getFoods())
+          .thenThrow((_) async => Exception('Failed to get foods'));
+
+      // * Act
+      final result = await foodRemoteDataSource.getFoods();
+
+      // * Assert
+
+      // Assert that the expected call to [getFoods] in the remote data source was made exactly once
+      verify(() => foodRemoteDataSource.getFoods()).called(1);
+
+      // Assert that a left value [ServerFailure] was returned
+      expect(result, equals(const Left(ServerFailure)));
     });
   });
 }

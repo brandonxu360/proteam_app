@@ -6,5 +6,5 @@ abstract class Failure extends Equatable {
   List<Object> get props => [];
 }
 
-// Server failure - indicating a failure relating to the remote data source
+// Generic server failure - indicating a failure relating to the remote data source
 class ServerFailure extends Failure {}
