@@ -5,3 +5,6 @@ abstract class Failure extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+// Server failure - indicating a failure relating to the remote data source
+class ServerFailure extends Failure {}
