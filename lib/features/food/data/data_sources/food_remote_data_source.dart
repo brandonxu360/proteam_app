@@ -1,12 +1,12 @@
-import 'package:proteam_app/features/food/data/models/food_model.dart';
+import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 
 abstract class FoodRemoteDataSource {
   // Create and persist a new food
-  Future<void> createFood(FoodModel food);
+  Future<void> createFood(FoodEntity food);
 
   // Get a list of all the foods
-  Future<List<FoodModel>> getFoods();
+  Future<List<FoodEntity>> getFoods();
 
   // Delete a food
-  Future<void> deleteFood(FoodModel food);
+  Future<void> deleteFood(FoodEntity food);
 }
