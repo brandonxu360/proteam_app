@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:proteam_app/core/services/main_injection_container.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize service locator
+  await init();
+
   runApp(const MainApp());
 }
 
