@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "285081369780",
+    "project_id": "proteam-app",
+    "storage_bucket": "proteam-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285081369780:android:83623daecc88932f5debe1",
+        "android_client_info": {
+          "package_name": "com.example.proteam_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjUcAc6OnM5-gcd16jl6MuCvIJHBTjbj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

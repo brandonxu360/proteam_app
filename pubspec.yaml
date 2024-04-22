@@ -12,6 +12,7 @@ dependencies:
   dartz: ^0.10.1
   equatable: ^2.0.5
   fake_cloud_firestore: ^2.4.9
+  firebase_core: ^2.30.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
