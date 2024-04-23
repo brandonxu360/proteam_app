@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/core/theme/text_style.dart';
 import 'package:proteam_app/core/utils/form_validation_helpers.dart';
 import 'package:proteam_app/core/widgets/image_widget.dart';
+import 'package:proteam_app/core/widgets/toast_widget.dart';
+import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
+import 'package:proteam_app/features/food/presentation/cubit/food_cubit.dart';
 
 class CreateFoodPage extends StatefulWidget {
   const CreateFoodPage({super.key});
@@ -14,6 +18,15 @@ class CreateFoodPage extends StatefulWidget {
 class _CreateFoodPageState extends State<CreateFoodPage> {
   // Global key for the form
   final _formKey = GlobalKey<FormState>();
+
+  // TextFormField controllers
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _servingsController = TextEditingController();
+  final TextEditingController _unitsController = TextEditingController();
+  final TextEditingController _caloriesController = TextEditingController();
+  final TextEditingController _carbsController = TextEditingController();
+  final TextEditingController _proteinController = TextEditingController();
+  final TextEditingController _fatsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +89,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                   style: Styles.bodyText2),
               const SizedBox(height: 20),
               TextFormField(
+                controller: _nameController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding:
@@ -96,6 +110,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      controller: _servingsController,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding:
@@ -117,6 +132,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
+                      controller: _unitsController,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding:
@@ -137,6 +153,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
               const Text('Nutrition Facts', style: Styles.headline2),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _caloriesController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding:
@@ -158,6 +175,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                controller: _carbsController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding:
@@ -179,6 +197,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                controller: _proteinController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding:
@@ -200,6 +219,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                controller: _fatsController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding:
@@ -223,7 +243,10 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    _formKey.currentState?.validate();
+                    // If the inputs are valid, submit the info
+                    if (_formKey.currentState!.validate()) {
+                      submitFoodInfo();
+                    }
                   },
                   child: Container(
                     height: 40,
@@ -258,5 +281,18 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
         ),
       ),
     );
+  }
+
+  // Create a food entity with the textfield values and pass it into the createFood method of the food cubit
+  void submitFoodInfo() {
+    BlocProvider.of<FoodCubit>(context).createFood(
+        food: FoodEntity(
+            name: _nameController.text,
+            servingSize: int.parse(_servingsController.text),
+            servingSizeUnit: _unitsController.text,
+            calories: int.parse(_caloriesController.text),
+            carbs: int.parse(_carbsController.text),
+            protein: int.parse(_proteinController.text),
+            fat: int.parse(_fatsController.text))).then((value) => toast('Food added'));
   }
 }

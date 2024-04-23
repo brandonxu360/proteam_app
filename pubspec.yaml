@@ -17,6 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
+  fluttertoast: ^8.2.5
   get_it: ^7.6.8
   mocktail: ^1.0.3
 
