@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:proteam_app/core/error/failures.dart';
 import 'package:proteam_app/features/user/domain/repositories/user_repository.dart';
 
 class IsSignedInUseCase {
@@ -5,7 +7,7 @@ class IsSignedInUseCase {
 
   IsSignedInUseCase({required this.repository});
 
-  Future<bool> call() async {
+  Future<Either<Failure, bool>> call() async {
     return repository.isSignedIn();
   }
 }
