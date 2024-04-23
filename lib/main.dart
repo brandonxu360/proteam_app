@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proteam_app/core/pages/home_page.dart';
 import 'package:proteam_app/core/services/main_injection_container.dart' as di;
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/features/food/presentation/cubit/food_cubit.dart';
@@ -30,7 +31,7 @@ class MainApp extends StatelessWidget {
       create: (context) => di.sl<FoodCubit>(),
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const CreateFoodPage(),
+          home: const HomePage(),
           theme: ThemeData.dark().copyWith(
             colorScheme: ColorScheme.fromSeed(
                 brightness: Brightness.dark, seedColor: boneColor),

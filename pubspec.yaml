@@ -18,7 +18,9 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.5
   fluttertoast: ^8.2.5
+  font_awesome_flutter: ^10.7.0
   get_it: ^7.6.8
+  google_nav_bar: ^5.0.6
   mocktail: ^1.0.3
 
 dev_dependencies:
