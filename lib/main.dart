@@ -4,7 +4,6 @@ import 'package:proteam_app/core/pages/home_page.dart';
 import 'package:proteam_app/core/services/main_injection_container.dart' as di;
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/features/food/presentation/cubit/food_cubit.dart';
-import 'package:proteam_app/features/food/presentation/pages/create_food_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
