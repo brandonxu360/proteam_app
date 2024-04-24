@@ -7,6 +7,9 @@ abstract class UserRepository {
   // Attempt sign in with email and password
   Future<Either<Failure, void>> signInWithEmail(String email, String password);
 
+  // Register with email and password
+  Future<Either<Failure, void>> registerWithEmail(String email, String username, String password);
+
   // Get the signed in status (true = a user is signed in, false = no user is signed in)
   Future<Either<Failure, bool>> isSignedIn();
 
@@ -20,5 +23,5 @@ abstract class UserRepository {
   Future<Either<Failure, void>> createUser(UserEntity user);
 
   // Get the user entity (user details) of a single user using UID input
-  Either<Failure, Stream<List<UserEntity>>> getSingleUser(String uid);
+  Future<Either<Failure, UserEntity>> getSingleUser(String uid);
 }

@@ -2,4 +2,7 @@
 class FirebaseCollectionConst {
   // Food collection
   static const String foods = 'foods';
+
+  // Users collection
+  static const String users = 'users';
 }

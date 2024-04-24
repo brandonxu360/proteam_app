@@ -8,3 +8,10 @@ abstract class Failure extends Equatable {
 
 // Generic server failure - indicating a failure relating to the remote data source
 class ServerFailure extends Failure {}
+
+// Authentication failures
+class AuthFailure extends Failure {
+  final String errorCode;
+
+  AuthFailure({required this.errorCode});
+}

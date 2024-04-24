@@ -8,7 +8,7 @@ class GetSingleUserUseCase {
 
   GetSingleUserUseCase({required this.repository});
 
-  Future<Either<Failure, Stream<List<UserEntity>>>> call(String uid) async {
+  Future<Either<Failure, UserEntity>> call(String uid) async {
     return repository.getSingleUser(uid);
   }
 }
