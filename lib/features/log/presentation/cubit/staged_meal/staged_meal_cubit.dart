@@ -50,6 +50,7 @@ class StagedMealCubit extends Cubit<StagedMealState> {
       final result = await logMealUseCase.call(stagedMeal);
 
       result.fold((l) => emit(StagedMealLogFailure()), (r) => emit(StagedMealLogSuccess()));
+
     } catch (_) {
       emit(StagedMealLogFailure());
     }
