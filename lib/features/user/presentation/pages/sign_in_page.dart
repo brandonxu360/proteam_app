@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:proteam_app/core/const/route_const.dart';
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/core/theme/text_style.dart';
 import 'package:proteam_app/core/utils/form_validation_helpers.dart';
@@ -122,7 +123,10 @@ class _SignInPageState extends State<SignInPage> {
                         children: [
                           const Text('Don\'t have an account?'),
                           GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                // Navigate to the register page
+                                Navigator.pushNamed(context, RouteConst.registerPage);
+                              },
                               child: const Text(
                                 ' Register',
                                 style: TextStyle(fontWeight: FontWeight.bold),
