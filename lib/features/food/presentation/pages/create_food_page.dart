@@ -254,6 +254,7 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                       color: boneColor,
                       borderRadius: BorderRadius.circular(5),
                     ),
+                    // TODO: implement circular progress indicator when working
                     child: false == true
                         ? const Center(
                             child: SizedBox(

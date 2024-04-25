@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 class Styles {
   static const Color primaryColor = Colors.blue;
 
+  static const TextStyle title1 = TextStyle(
+    fontSize: 34,
+    fontWeight: FontWeight.bold
+  );
+
   static const TextStyle headline1 = TextStyle(
     fontSize: 24.0,
     fontWeight: FontWeight.bold,
