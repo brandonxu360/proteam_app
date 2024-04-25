@@ -49,7 +49,8 @@ class StagedMealCubit extends Cubit<StagedMealState> {
       // TODO: check if staged meal is valid? (not empty)... or handle this later in the call flow
       final result = await logMealUseCase.call(stagedMeal);
 
-      result.fold((l) => emit(StagedMealLogFailure()), (r) => emit(StagedMealLogSuccess()))
+      result.fold((l) => emit(StagedMealLogFailure()), (r) => emit(StagedMealLogSuccess()));
+
     } catch (_) {
       emit(StagedMealLogFailure());
     }
