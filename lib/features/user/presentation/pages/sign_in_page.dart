@@ -33,7 +33,7 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(height: 10),
                   const Column(
                     children: [
-                      FaIcon(FontAwesomeIcons.drumstickBite, size: 90),
+                      FaIcon(FontAwesomeIcons.drumstickBite, size: 90, color: boneColor),
                       SizedBox(height: 20),
                       Text(
                         'Proteam',
@@ -104,7 +104,7 @@ class _SignInPageState extends State<SignInPage> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: isabellineColor,
+                              color: boneColor,
                               borderRadius: BorderRadius.circular(12)),
                           padding: const EdgeInsets.all(15),
                           child: const Center(
