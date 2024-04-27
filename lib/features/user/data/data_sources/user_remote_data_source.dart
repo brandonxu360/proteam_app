@@ -4,11 +4,11 @@ abstract class UserRemoteDataSource {
   // Attempt sign in with email and password
   Future<void> signInWithEmail(String email, String password);
 
-  // Register with email and password
-  Future<void> registerWithEmail(String email, String password);
+  // Register with email and password, return the uid when successful
+  Future<String> registerWithEmail(String email, String password);
 
-  // Get the signed in status (true = a user is signed in, false = no user is signed in)
-  Future<bool> isSignedIn();
+  // Get the signed in status (uid = a user is signed in, null = no user is signed in)
+  Future<String?> isSignedIn();
 
   // Sign the current user out
   Future<void> signOut();

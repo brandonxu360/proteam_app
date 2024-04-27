@@ -21,3 +21,9 @@ class Authenticated extends AuthState {
 
 // State that user is unauthenticated
 class UnAuthenticated extends AuthState {}
+
+// State that an auth process is currently in progress
+class AuthProcessInProgress extends AuthState {}
+
+// State that an auth process encountered an error
+class AuthProcessFailure extends AuthState {}

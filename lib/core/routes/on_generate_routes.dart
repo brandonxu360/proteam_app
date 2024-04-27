@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:proteam_app/core/const/route_const.dart';
+import 'package:proteam_app/core/pages/home_page.dart';
 import 'package:proteam_app/features/food/presentation/pages/create_food_page.dart';
 import 'package:proteam_app/features/user/presentation/pages/register_page.dart';
+import 'package:proteam_app/features/user/presentation/pages/sign_in_page.dart';
 
 class OnGenerateRoute {
   static Route<dynamic>? route(RouteSettings settings) {
@@ -17,6 +19,20 @@ class OnGenerateRoute {
       case RouteConst.registerPage:
         {
           return materialPageBuilder(const RegisterPage());
+        }
+
+      case RouteConst.signInPage:
+        {
+          return materialPageBuilder(const SignInPage());
+        }
+
+      case RouteConst.homePage:
+        {
+          if (args is String) {
+            return materialPageBuilder(HomePage(uid: args));
+          } else {
+            return materialPageBuilder(const ErrorPage());
+          }
         }
     }
 

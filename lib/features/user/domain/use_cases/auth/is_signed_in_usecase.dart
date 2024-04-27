@@ -7,7 +7,7 @@ class IsSignedInUseCase {
 
   IsSignedInUseCase({required this.repository});
 
-  Future<Either<Failure, bool>> call() async {
+  Future<Either<Failure, String?>> call() async {
     return repository.isSignedIn();
   }
 }
