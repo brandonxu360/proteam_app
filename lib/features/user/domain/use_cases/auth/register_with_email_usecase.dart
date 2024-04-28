@@ -7,7 +7,7 @@ class RegisterWithEmail {
 
   RegisterWithEmail({required this.repository});
 
-  Future<Either<Failure, void>> call(String email, String username, String password) async {
-    return repository.registerWithEmail(email, username, password);
+  Future<Either<Failure, String>> call(String email, String password) async {
+    return repository.registerWithEmail(email, password);
   }
 }

@@ -8,10 +8,10 @@ abstract class UserRepository {
   Future<Either<Failure, void>> signInWithEmail(String email, String password);
 
   // Register with email and password
-  Future<Either<Failure, void>> registerWithEmail(String email, String username, String password);
+  Future<Either<Failure, String>> registerWithEmail(String email, String password);
 
-  // Get the signed in status (true = a user is signed in, false = no user is signed in)
-  Future<Either<Failure, bool>> isSignedIn();
+  // Get the signed in status (valid uid = a user is signed in, null = no user is signed in)
+  Future<Either<Failure, String?>> isSignedIn();
 
   // Sign the current user out
   Future<Either<Failure, void>> signOut();

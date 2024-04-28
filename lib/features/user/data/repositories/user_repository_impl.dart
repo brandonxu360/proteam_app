@@ -49,7 +49,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> isSignedIn() async {
+  Future<Either<Failure, String?>> isSignedIn() async {
     try {
       // Call the user remote data source to get the sign in status
       final isSignedIn = await userRemoteDataSource.isSignedIn();
@@ -92,13 +92,13 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, void>> registerWithEmail(
-      String email, String username, String password) async {
+  Future<Either<Failure, String>> registerWithEmail(
+      String email, String password) async {
     try {
       // Register the user with firebase
-      await userRemoteDataSource.registerWithEmail(email, password);
+      final uid = await userRemoteDataSource.registerWithEmail(email, password);
 
-      return const Right(null);
+      return Right(uid);
     } on FirebaseAuthException catch (e) {
       // Return a right AuthFailure to signify an auth failure (ie. email already in use)
       return Left(AuthFailure(errorCode: e.code));

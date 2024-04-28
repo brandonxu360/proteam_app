@@ -14,10 +14,12 @@ import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dar
 
 Future<void> userInjectionContainer() async {
   // * Cubit Registration
-  sl.registerFactory<AuthCubit>(() => AuthCubit(
+  sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
       getCurrentUidUseCase: sl.call(),
       isSignedInUseCase: sl.call(),
-      signOutUseCase: sl.call()));
+      signOutUseCase: sl.call(),
+      registerWithEmail: sl.call(),
+      createUserUseCase: sl.call()));
 
   // * Use case injection
 

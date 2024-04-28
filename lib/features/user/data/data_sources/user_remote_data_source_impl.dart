@@ -66,8 +66,8 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<bool> isSignedIn() async {
-    return firebaseAuth.currentUser != null;
+  Future<String?> isSignedIn() async {
+    return firebaseAuth.currentUser?.uid;
   }
 
   // Attempt sign in with email and password
@@ -95,19 +95,22 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<void> registerWithEmail(String email, String password) async {
+  Future<String> registerWithEmail(String email, String password) async {
     try {
-      await firebaseAuth.createUserWithEmailAndPassword(
+      final credential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      // Auth exceptions - email already in use, etc.
-    } on FirebaseAuthException {
+
+      // Return the uid
+      return credential.user!.uid;
+    }
+    // Auth exceptions - email already in use, etc.
+    on FirebaseAuthException {
       rethrow;
 
       // General exceptions - something unexpected went wrong with firebase
     } catch (e) {
-      
       throw Exception('Unknown server error encountered');
     }
   }

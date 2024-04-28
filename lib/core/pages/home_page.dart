@@ -6,7 +6,10 @@ import 'package:proteam_app/features/log/presentation/pages/log_page.dart';
 import 'package:proteam_app/features/user/presentation/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  // The uid of the user currently signed in
+  final String uid;
+
+  const HomePage({super.key, required this.uid});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,14 +17,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Controls which page to display
-  int screenIndex = 0;
+  late int screenIndex;
 
   // Top level pages (pages accessible from home)
-  final homePages = [
-    const DashboardPage(),
-    const LogPage(),
-    const ProfilePage()
-  ];
+  late List<Widget> homePages;
+
+  @override
+  void initState() {
+    screenIndex = 0;
+
+    homePages = [
+      const DashboardPage(),
+      const LogPage(),
+      ProfilePage(uid: widget.uid)
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,37 +44,43 @@ class _HomePageState extends State<HomePage> {
       ),
 
       // Use of container around GNav navigation bar to space navigation bar away from bottom of screen while maintaining continuity in color
-      bottomNavigationBar: GNav(
-          gap: 8,
-          backgroundColor: slateGreyColor,
-          tabs: [
-            GButton(
-              icon: Icons.dashboard_rounded,
-              text: 'Dashboard',
-              onPressed: () {
-                setState(() {
-                  screenIndex = 0;
-                });
-              },
-            ),
-            GButton(
-              icon: Icons.book_rounded,
-              text: 'Diary',
-              onPressed: () {
-                setState(() {
-                  screenIndex = 1;
-                });
-              },
-            ),
-            GButton(
-                icon: Icons.person_rounded,
-                text: 'Profile',
-                onPressed: () => {
-                      setState(() {
-                        screenIndex = 2;
-                      }),
-                    }),
-          ]),
+      bottomNavigationBar: GNav(gap: 8, backgroundColor: isabellineColor, tabs: [
+        GButton(
+          iconActiveColor: blackColor,
+          iconColor: greyColor,
+          textColor: blackColor,
+          icon: Icons.dashboard_rounded,
+          text: 'Dashboard',
+          onPressed: () {
+            setState(() {
+              screenIndex = 0;
+            });
+          },
+        ),
+        GButton(
+          iconActiveColor: blackColor,
+          iconColor: greyColor,
+          textColor: blackColor,
+          icon: Icons.book_rounded,
+          text: 'Diary',
+          onPressed: () {
+            setState(() {
+              screenIndex = 1;
+            });
+          },
+        ),
+        GButton(
+          iconActiveColor: blackColor,
+          textColor: blackColor,
+          iconColor: greyColor,
+            icon: Icons.person_rounded,
+            text: 'Profile',
+            onPressed: () => {
+                  setState(() {
+                    screenIndex = 2;
+                  }),
+                }),
+      ]),
     );
   }
 }

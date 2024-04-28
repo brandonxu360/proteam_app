@@ -1,38 +1,69 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/get_current_uid_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/is_signed_in_usecase.dart';
+import 'package:proteam_app/features/user/domain/use_cases/auth/register_with_email_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/sign_out_usecase.dart';
+import 'package:proteam_app/features/user/domain/use_cases/user/create_user_usecase.dart';
 
 part 'auth_state.dart';
 
+// Cubit to primarily handle user authentication
 class AuthCubit extends Cubit<AuthState> {
   final GetCurrentUidUseCase getCurrentUidUseCase;
   final IsSignedInUseCase isSignedInUseCase;
   final SignOutUseCase signOutUseCase;
+  final RegisterWithEmail registerWithEmail;
+  final CreateUserUseCase createUserUseCase;
 
   AuthCubit(
       {required this.getCurrentUidUseCase,
       required this.isSignedInUseCase,
-      required this.signOutUseCase})
+      required this.signOutUseCase,
+      required this.registerWithEmail,
+      required this.createUserUseCase})
       : super(AuthInitial());
 
-  // Emit authentication state
+  // Emit authentication state (is a user signed in or not)
   Future<void> appStart() async {
-    final isSignedIn = await isSignedInUseCase.call();
-    final getUidResult = await getCurrentUidUseCase.call();
+    // Determine if a user is signed in
+    final uid = await isSignedInUseCase.call();
 
-    // Get the right value
-    final uid = getUidResult.fold((l) => null, (r) => r);
-
-    // Emit authenticated if right values for isSignedIn and getUid, and isSignedIn is true
-    isSignedIn.fold((l) => emit(UnAuthenticated()), (r) {
-      if (uid != null && r) {
-        emit(Authenticated(uid: uid));
-      } else {
-        // Emit Unauthenticated if left values occur or isSignedIn is false (TODO: emit error/failure states instead when a left value is encountered)
+    // Emit authenticated state if valid uid was returned
+    // TODO: emit a failure/error state rather than simply unauthenticated if a failure was returned (left val)
+    uid.fold((l) => emit(UnAuthenticated()), (r) {
+      if (r == null) {
         emit(UnAuthenticated());
+      } else {
+        emit(Authenticated(uid: r));
       }
     });
+  }
+
+  // Register a new user with email and password
+  Future<void> registerWithEmailPassword(String email, String username, String password) async {
+    emit(AuthProcessInProgress());
+
+    // Try registering the user with the provided credentials
+    final registrationResult = await registerWithEmail.call(email, password);
+
+    registrationResult.fold((l) {
+      emit(AuthProcessFailure());
+    }, (r) async {
+      // Create the user record in the database if the user auth was successful
+      await createUserUseCase.call(UserEntity(uid: r, username: username, email: email));
+      emit(Authenticated(uid: r));
+    });
+  }
+
+  Future<void> signOut() async {
+    final signoutResult = await signOutUseCase.call();
+
+    // TODO: keep in mind that the users data should be removed from screens, etc.
+
+    // Sign the user out if the signout call was successful
+    signoutResult.fold(
+        (l) => emit(AuthProcessFailure()), (r) => emit(UnAuthenticated()));
   }
 }
