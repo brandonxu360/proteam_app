@@ -44,8 +44,11 @@ class _HomePageState extends State<HomePage> {
       ),
 
       // Use of container around GNav navigation bar to space navigation bar away from bottom of screen while maintaining continuity in color
-      bottomNavigationBar: GNav(gap: 8, backgroundColor: slateGreyColor, tabs: [
+      bottomNavigationBar: GNav(gap: 8, backgroundColor: isabellineColor, tabs: [
         GButton(
+          iconActiveColor: blackColor,
+          iconColor: greyColor,
+          textColor: blackColor,
           icon: Icons.dashboard_rounded,
           text: 'Dashboard',
           onPressed: () {
@@ -55,6 +58,9 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         GButton(
+          iconActiveColor: blackColor,
+          iconColor: greyColor,
+          textColor: blackColor,
           icon: Icons.book_rounded,
           text: 'Diary',
           onPressed: () {
@@ -64,6 +70,9 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         GButton(
+          iconActiveColor: blackColor,
+          textColor: blackColor,
+          iconColor: greyColor,
             icon: Icons.person_rounded,
             text: 'Profile',
             onPressed: () => {

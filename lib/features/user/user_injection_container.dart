@@ -18,7 +18,8 @@ Future<void> userInjectionContainer() async {
       getCurrentUidUseCase: sl.call(),
       isSignedInUseCase: sl.call(),
       signOutUseCase: sl.call(),
-      registerWithEmail: sl.call()));
+      registerWithEmail: sl.call(),
+      createUserUseCase: sl.call()));
 
   // * Use case injection
 

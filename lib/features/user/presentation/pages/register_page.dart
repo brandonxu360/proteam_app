@@ -160,7 +160,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (_formKey.currentState!.validate()) {
                           // Attempt to register the user
                           BlocProvider.of<AuthCubit>(context)
-                              .registerWithEmailPassword(_emailController.text,
+                              .registerWithEmailPassword(
+                                  _emailController.text,
+                                  _usernameController.text,
                                   _passwordController.text);
                         }
                       },
