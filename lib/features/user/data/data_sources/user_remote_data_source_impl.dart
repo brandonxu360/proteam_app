@@ -57,7 +57,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         .doc(uid)
         .get();
 
-    if (!userSnapshot.exists) {
+    if (userSnapshot.exists) {
       // Map the user document to a user model
       return UserModel.fromSnapshot(userSnapshot);
     } else {

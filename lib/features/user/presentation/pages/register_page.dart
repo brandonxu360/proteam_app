@@ -145,12 +145,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {
                     // Display a toast if registration was not successful
-                    if (state is RegisterFailure) {
+                    if (state is RegisterError) {
                       toast(
                           'An unexpected error occured, please try again later');
-                    } else if (state is RegisterUnAuthenticated) {
+                    } else if (state is RegisterFailure) {
                       toast(
-                          'Registration failed: ${state.registerErrorMessage}');
+                          'Registration failed: ${state.feedback}');
                     }
 
                     // Navigate to the home page if the authentication was successful

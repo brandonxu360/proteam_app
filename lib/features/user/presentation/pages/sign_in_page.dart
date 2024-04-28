@@ -118,12 +118,12 @@ class _SignInPageState extends State<SignInPage> {
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
                           // Display a toast if sign in was not successful
-                          if (state is SignInFailure) {
+                          if (state is SignInError) {
                             toast(
                                 'An unexpected error occured, please try again later');
-                          } else if (state is SignInUnAuthenticated) {
+                          } else if (state is SignInFailure) {
                             toast(
-                                'Sign in failed: ${state.signInErrorMessage}');
+                                'Sign in failed: ${state.feedback}');
                           }
 
                           // Navigate to the home page if the authentication was successful

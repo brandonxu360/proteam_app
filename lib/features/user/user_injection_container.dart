@@ -11,16 +11,19 @@ import 'package:proteam_app/features/user/domain/use_cases/auth/sign_out_usecase
 import 'package:proteam_app/features/user/domain/use_cases/user/create_user_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/user/get_single_user_usecase.dart';
 import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dart';
+import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
 
 Future<void> userInjectionContainer() async {
   // * Cubit Registration
-  sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
+  sl.registerFactory<AuthCubit>(() => AuthCubit(
       getCurrentUidUseCase: sl.call(),
       isSignedInUseCase: sl.call(),
       signOutUseCase: sl.call(),
       registerWithEmail: sl.call(),
       createUserUseCase: sl.call(),
       signInWithEmailUseCase: sl.call()));
+
+  sl.registerFactory<UserCubit>(() => UserCubit(getSingleUserUseCase: sl.call()));
 
   // * Use case injection
 
