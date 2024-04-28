@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:proteam_app/core/const/route_const.dart';
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/core/theme/text_style.dart';
 import 'package:proteam_app/core/utils/form_validation_helpers.dart';
+import 'package:proteam_app/core/widgets/toast_widget.dart';
+import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -15,6 +18,10 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   // Global key for the form
   final _formKey = GlobalKey<FormState>();
+
+  // Text field controllers
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +38,12 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(height: 10),
+
+                  // Header
                   const Column(
                     children: [
-                      FaIcon(FontAwesomeIcons.drumstickBite, size: 90, color: boneColor),
+                      FaIcon(FontAwesomeIcons.drumstickBite,
+                          size: 90, color: boneColor),
                       SizedBox(height: 20),
                       Text(
                         'Proteam',
@@ -41,6 +51,8 @@ class _SignInPageState extends State<SignInPage> {
                       )
                     ],
                   ),
+
+                  // Form (text form fields)
                   Form(
                     key: _formKey,
                     child: Column(
@@ -55,12 +67,13 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
+                          controller: _emailController,
                           scrollPadding: const EdgeInsets.only(bottom: 150),
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 8),
-                              labelText: 'Username',
+                              labelText: 'Email',
                               helperText: ''),
                           validator: (value) {
                             if (!notEmptyCheck(value)) {
@@ -71,7 +84,9 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 5),
                         TextFormField(
+                          controller: _passwordController,
                           scrollPadding: const EdgeInsets.only(bottom: 220),
+                          obscureText: true,
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
@@ -96,24 +111,58 @@ class _SignInPageState extends State<SignInPage> {
                       ],
                     ),
                   ),
+
+                  // Buttons and options
                   Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {}
+                      BlocConsumer<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          // Display a toast if sign in was not successful
+                          if (state is SignInFailure) {
+                            toast(
+                                'An unexpected error occured, please try again later');
+                          } else if (state is SignInUnAuthenticated) {
+                            toast(
+                                'Sign in failed: ${state.signInErrorMessage}');
+                          }
+
+                          // Navigate to the home page if the authentication was successful
+                          else if (state is SignInAuthenticated) {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, RouteConst.homePage, (route) => false,
+                                arguments: state.uid);
+                          }
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: boneColor,
-                              borderRadius: BorderRadius.circular(12)),
-                          padding: const EdgeInsets.all(15),
-                          child: const Center(
-                              child: Text('Log in',
-                                  style: TextStyle(
-                                      color: blackColor,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 22))),
-                        ),
+                        builder: (context, state) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (_formKey.currentState!.validate()) {
+                                // If the form fields pass the validation checks, attempt to sign user in
+                                BlocProvider.of<AuthCubit>(context)
+                                    .signInWithEmailAndPassword(
+                                        _emailController.text,
+                                        _passwordController.text);
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: boneColor,
+                                  borderRadius: BorderRadius.circular(12)),
+                              padding: const EdgeInsets.all(15),
+                              child: Center(
+                                  // Return a circular progress indicator if the authentication is currently in progress, regular 'register' text otherwise
+                                  child: (state is SignInInProgress)
+                                      ? const CircularProgressIndicator(
+                                          color: blackColor,
+                                        )
+                                      : const Text('Log in',
+                                          style: TextStyle(
+                                              color: blackColor,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 22))),
+                            ),
+                          );
+                        },
                       ),
 
                       const SizedBox(height: 25),
@@ -125,7 +174,8 @@ class _SignInPageState extends State<SignInPage> {
                           GestureDetector(
                               onTap: () {
                                 // Navigate to the register page
-                                Navigator.pushNamed(context, RouteConst.registerPage);
+                                Navigator.pushNamed(
+                                    context, RouteConst.registerPage);
                               },
                               child: const Text(
                                 ' Register',

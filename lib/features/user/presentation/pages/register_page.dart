@@ -120,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: _passwordController,
                       scrollPadding: const EdgeInsets.only(bottom: 220),
+                      obscureText: true,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding:
@@ -143,13 +144,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Register button
                   BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {
-                    // Display a toast if authentication was not successful
-                    if (state is AuthProcessFailure) {
-                      toast('Something went wrong');
+                    // Display a toast if registration was not successful
+                    if (state is RegisterFailure) {
+                      toast(
+                          'An unexpected error occured, please try again later');
+                    } else if (state is RegisterUnAuthenticated) {
+                      toast(
+                          'Registration failed: ${state.registerErrorMessage}');
                     }
 
                     // Navigate to the home page if the authentication was successful
-                    if (state is Authenticated) {
+                    else if (state is RegisterAuthenticated) {
                       Navigator.pushNamedAndRemoveUntil(
                           context, RouteConst.homePage, (route) => false,
                           arguments: state.uid);
@@ -171,9 +176,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: boneColor,
                             borderRadius: BorderRadius.circular(12)),
                         padding: const EdgeInsets.all(15),
+                        // Return a circular progress indicator if the authentication is currently in progress, regular 'register' text otherwise
                         child: Center(
-                            child: (state is AuthProcessInProgress)
-                                ? const CircularProgressIndicator()
+                            child: (state is RegisterInProgress)
+                                ? const CircularProgressIndicator(
+                                    color: blackColor,
+                                  )
                                 : const Text('Register',
                                     style: TextStyle(
                                         color: blackColor,

@@ -61,14 +61,14 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, void>> signInWithEmail(
+  Future<Either<Failure, String>> signInWithEmail(
       String email, String password) async {
     try {
       // Call the user remote data source to attempt sign in
-      await userRemoteDataSource.signInWithEmail(email, password);
+      final uid = await userRemoteDataSource.signInWithEmail(email, password);
 
-      // Return a right void to signify successful completion
-      return const Right(null);
+      // Return a right value containing the uid to signify successful completion
+      return Right(uid);
     } on FirebaseAuthException catch (e) {
       // Return a right AuthFailure to signify an auth failure (ie. incorrect credentials)
       return Left(AuthFailure(errorCode: e.code));

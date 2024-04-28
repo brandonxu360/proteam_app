@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:proteam_app/core/error/failures.dart';
 import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/get_current_uid_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/is_signed_in_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/register_with_email_usecase.dart';
+import 'package:proteam_app/features/user/domain/use_cases/auth/sign_in_with_email_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/sign_out_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/user/create_user_usecase.dart';
 
@@ -14,15 +16,17 @@ class AuthCubit extends Cubit<AuthState> {
   final GetCurrentUidUseCase getCurrentUidUseCase;
   final IsSignedInUseCase isSignedInUseCase;
   final SignOutUseCase signOutUseCase;
-  final RegisterWithEmail registerWithEmail;
+  final RegisterWithEmailUseCase registerWithEmail;
   final CreateUserUseCase createUserUseCase;
+  final SignInWithEmailUseCase signInWithEmailUseCase;
 
   AuthCubit(
       {required this.getCurrentUidUseCase,
       required this.isSignedInUseCase,
       required this.signOutUseCase,
       required this.registerWithEmail,
-      required this.createUserUseCase})
+      required this.createUserUseCase,
+      required this.signInWithEmailUseCase})
       : super(AuthInitial());
 
   // Emit authentication state (is a user signed in or not)
@@ -42,19 +46,46 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // Register a new user with email and password
-  Future<void> registerWithEmailPassword(String email, String username, String password) async {
-    emit(AuthProcessInProgress());
+  Future<void> registerWithEmailPassword(
+      String email, String username, String password) async {
+    emit(RegisterInProgress());
 
     // Try registering the user with the provided credentials
     final registrationResult = await registerWithEmail.call(email, password);
 
     registrationResult.fold((l) {
-      emit(AuthProcessFailure());
+      // Registration failed (email already in use, etc)
+      if (l is AuthFailure) {
+        emit(RegisterUnAuthenticated(registerErrorMessage: l.errorCode));
+      } 
+      // Unexpected techincal error - server failure, etc.
+      else {
+        emit(RegisterFailure());
+      }
     }, (r) async {
       // Create the user record in the database if the user auth was successful
-      await createUserUseCase.call(UserEntity(uid: r, username: username, email: email));
-      emit(Authenticated(uid: r));
+      await createUserUseCase
+          .call(UserEntity(uid: r, username: username, email: email));
+      emit(RegisterAuthenticated(uid: r));
     });
+  }
+
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    emit(SignInInProgress());
+
+    // Try sign in with the provided credentials
+    final signInResult = await signInWithEmailUseCase(email, password);
+
+    signInResult.fold((l) {
+      // Authentication failure - incorrect credentials, etc.
+      if (l is AuthFailure) {
+        emit(SignInUnAuthenticated(signInErrorMessage: l.errorCode));
+      }
+      // Unexpected technical error - server failure, etc.
+      else {
+        emit(SignInFailure());
+      }
+    }, (r) => emit(SignInAuthenticated(uid: r)));
   }
 
   Future<void> signOut() async {

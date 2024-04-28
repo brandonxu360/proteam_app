@@ -5,7 +5,7 @@ import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 abstract class UserRepository {
 
   // Attempt sign in with email and password
-  Future<Either<Failure, void>> signInWithEmail(String email, String password);
+  Future<Either<Failure, String>> signInWithEmail(String email, String password);
 
   // Register with email and password
   Future<Either<Failure, String>> registerWithEmail(String email, String password);
