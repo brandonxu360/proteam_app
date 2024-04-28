@@ -86,6 +86,7 @@ class _SignInPageState extends State<SignInPage> {
                         TextFormField(
                           controller: _passwordController,
                           scrollPadding: const EdgeInsets.only(bottom: 220),
+                          obscureText: true,
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
@@ -117,12 +118,16 @@ class _SignInPageState extends State<SignInPage> {
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
                           // Display a toast if sign in was not successful
-                          if (state is AuthProcessFailure) {
-                            toast('Something went wrong');
+                          if (state is SignInFailure) {
+                            toast(
+                                'An unexpected error occured, please try again later');
+                          } else if (state is SignInUnAuthenticated) {
+                            toast(
+                                'Sign in failed: ${state.signInErrorMessage}');
                           }
 
                           // Navigate to the home page if the authentication was successful
-                          if (state is Authenticated) {
+                          else if (state is SignInAuthenticated) {
                             Navigator.pushNamedAndRemoveUntil(
                                 context, RouteConst.homePage, (route) => false,
                                 arguments: state.uid);
@@ -146,7 +151,7 @@ class _SignInPageState extends State<SignInPage> {
                               padding: const EdgeInsets.all(15),
                               child: Center(
                                   // Return a circular progress indicator if the authentication is currently in progress, regular 'register' text otherwise
-                                  child: (state is AuthProcessInProgress)
+                                  child: (state is SignInInProgress)
                                       ? const CircularProgressIndicator(
                                           color: blackColor,
                                         )

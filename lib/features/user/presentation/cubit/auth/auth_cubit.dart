@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:proteam_app/core/error/failures.dart';
 import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/get_current_uid_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/is_signed_in_usecase.dart';
@@ -47,29 +48,44 @@ class AuthCubit extends Cubit<AuthState> {
   // Register a new user with email and password
   Future<void> registerWithEmailPassword(
       String email, String username, String password) async {
-    emit(AuthProcessInProgress());
+    emit(RegisterInProgress());
 
     // Try registering the user with the provided credentials
     final registrationResult = await registerWithEmail.call(email, password);
 
     registrationResult.fold((l) {
-      emit(AuthProcessFailure());
+      // Registration failed (email already in use, etc)
+      if (l is AuthFailure) {
+        emit(RegisterUnAuthenticated(registerErrorMessage: l.errorCode));
+      } 
+      // Unexpected techincal error - server failure, etc.
+      else {
+        emit(RegisterFailure());
+      }
     }, (r) async {
       // Create the user record in the database if the user auth was successful
       await createUserUseCase
           .call(UserEntity(uid: r, username: username, email: email));
-      emit(Authenticated(uid: r));
+      emit(RegisterAuthenticated(uid: r));
     });
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
-    emit(AuthProcessInProgress());
+    emit(SignInInProgress());
 
     // Try sign in with the provided credentials
     final signInResult = await signInWithEmailUseCase(email, password);
 
-    signInResult.fold(
-        (l) => emit(AuthProcessFailure()), (r) => emit(Authenticated(uid: r)));
+    signInResult.fold((l) {
+      // Authentication failure - incorrect credentials, etc.
+      if (l is AuthFailure) {
+        emit(SignInUnAuthenticated(signInErrorMessage: l.errorCode));
+      }
+      // Unexpected technical error - server failure, etc.
+      else {
+        emit(SignInFailure());
+      }
+    }, (r) => emit(SignInAuthenticated(uid: r)));
   }
 
   Future<void> signOut() async {
