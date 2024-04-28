@@ -143,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Register button
                   BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {
-                    // Display a toast if authentication was not successful
+                    // Display a toast if registration was not successful
                     if (state is AuthProcessFailure) {
                       toast('Something went wrong');
                     }
@@ -171,9 +171,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: boneColor,
                             borderRadius: BorderRadius.circular(12)),
                         padding: const EdgeInsets.all(15),
+                        // Return a circular progress indicator if the authentication is currently in progress, regular 'register' text otherwise
                         child: Center(
                             child: (state is AuthProcessInProgress)
-                                ? const CircularProgressIndicator()
+                                ? const CircularProgressIndicator(color: blackColor,)
                                 : const Text('Register',
                                     style: TextStyle(
                                         color: blackColor,

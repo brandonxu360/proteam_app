@@ -72,11 +72,14 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   // Attempt sign in with email and password
   @override
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<String> signInWithEmail(String email, String password) async {
     try {
       // Try sign in through firebase auth
-      await firebaseAuth.signInWithEmailAndPassword(
+      final cred = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+
+      // Return the uid of the user that was signed in
+      return cred.user!.uid;
     }
     // Auth Exceptions - wrong credentials, account doesn't exist, etc
     on FirebaseAuthException {

@@ -4,6 +4,7 @@ import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/get_current_uid_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/is_signed_in_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/register_with_email_usecase.dart';
+import 'package:proteam_app/features/user/domain/use_cases/auth/sign_in_with_email_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/sign_out_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/user/create_user_usecase.dart';
 
@@ -14,15 +15,17 @@ class AuthCubit extends Cubit<AuthState> {
   final GetCurrentUidUseCase getCurrentUidUseCase;
   final IsSignedInUseCase isSignedInUseCase;
   final SignOutUseCase signOutUseCase;
-  final RegisterWithEmail registerWithEmail;
+  final RegisterWithEmailUseCase registerWithEmail;
   final CreateUserUseCase createUserUseCase;
+  final SignInWithEmailUseCase signInWithEmailUseCase;
 
   AuthCubit(
       {required this.getCurrentUidUseCase,
       required this.isSignedInUseCase,
       required this.signOutUseCase,
       required this.registerWithEmail,
-      required this.createUserUseCase})
+      required this.createUserUseCase,
+      required this.signInWithEmailUseCase})
       : super(AuthInitial());
 
   // Emit authentication state (is a user signed in or not)
@@ -42,7 +45,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // Register a new user with email and password
-  Future<void> registerWithEmailPassword(String email, String username, String password) async {
+  Future<void> registerWithEmailPassword(
+      String email, String username, String password) async {
     emit(AuthProcessInProgress());
 
     // Try registering the user with the provided credentials
@@ -52,9 +56,20 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthProcessFailure());
     }, (r) async {
       // Create the user record in the database if the user auth was successful
-      await createUserUseCase.call(UserEntity(uid: r, username: username, email: email));
+      await createUserUseCase
+          .call(UserEntity(uid: r, username: username, email: email));
       emit(Authenticated(uid: r));
     });
+  }
+
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    emit(AuthProcessInProgress());
+
+    // Try sign in with the provided credentials
+    final signInResult = await signInWithEmailUseCase(email, password);
+
+    signInResult.fold(
+        (l) => emit(AuthProcessFailure()), (r) => emit(Authenticated(uid: r)));
   }
 
   Future<void> signOut() async {

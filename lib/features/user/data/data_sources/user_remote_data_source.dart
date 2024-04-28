@@ -2,7 +2,7 @@ import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 
 abstract class UserRemoteDataSource {
   // Attempt sign in with email and password
-  Future<void> signInWithEmail(String email, String password);
+  Future<String> signInWithEmail(String email, String password);
 
   // Register with email and password, return the uid when successful
   Future<String> registerWithEmail(String email, String password);

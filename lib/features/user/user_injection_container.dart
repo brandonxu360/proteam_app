@@ -19,14 +19,15 @@ Future<void> userInjectionContainer() async {
       isSignedInUseCase: sl.call(),
       signOutUseCase: sl.call(),
       registerWithEmail: sl.call(),
-      createUserUseCase: sl.call()));
+      createUserUseCase: sl.call(),
+      signInWithEmailUseCase: sl.call()));
 
   // * Use case injection
 
   sl.registerLazySingleton(() => GetCurrentUidUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => IsSignedInUseCase(repository: sl.call()));
-  sl.registerLazySingleton(() => RegisterWithEmail(repository: sl.call()));
-  sl.registerLazySingleton(() => SignInWithEmail(repository: sl.call()));
+  sl.registerLazySingleton(() => RegisterWithEmailUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => SignInWithEmailUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => SignOutUseCase(repository: sl.call()));
 
   sl.registerLazySingleton(() => CreateUserUseCase(repository: sl.call()));
