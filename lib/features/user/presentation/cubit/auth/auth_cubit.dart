@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:proteam_app/core/error/failures.dart';
+import 'package:proteam_app/core/utils/string_conversion_helpers.dart';
 import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/get_current_uid_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/is_signed_in_usecase.dart';
@@ -56,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
     registrationResult.fold((l) {
       // Registration failed (email already in use, etc)
       if (l is AuthFailure) {
-        emit(RegisterFailure(feedback: l.errorCode));
+        emit(RegisterFailure(feedback: convertFirebaseAuthErrorCode(l.errorCode)));
       } 
       // Unexpected techincal error - server failure, etc.
       else {
@@ -79,7 +80,7 @@ class AuthCubit extends Cubit<AuthState> {
     signInResult.fold((l) {
       // Authentication failure - incorrect credentials, etc.
       if (l is AuthFailure) {
-        emit(SignInFailure(feedback: l.errorCode));
+        emit(SignInFailure(feedback: convertFirebaseAuthErrorCode(l.errorCode)));
       }
       // Unexpected technical error - server failure, etc.
       else {
