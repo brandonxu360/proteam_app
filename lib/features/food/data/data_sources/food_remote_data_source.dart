@@ -9,4 +9,7 @@ abstract class FoodRemoteDataSource {
 
   // Delete a food
   Future<void> deleteFood(FoodEntity food);
+
+  // Search for a food by name, return the top 20 results
+  Future<List<FoodEntity>> searchFood(String foodName);
 }

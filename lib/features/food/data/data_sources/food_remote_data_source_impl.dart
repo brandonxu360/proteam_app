@@ -65,4 +65,10 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
       throw Exception('Failed to get foods: $e');
     }
   }
+  
+  @override
+  Future<List<FoodEntity>> searchFood(String foodName) {
+    // TODO: implement searchFood
+    throw UnimplementedError();
+  }
 }

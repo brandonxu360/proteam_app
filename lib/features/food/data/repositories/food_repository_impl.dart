@@ -50,4 +50,11 @@ class FoodRepositoryImpl extends FoodRepository {
       return Left(ServerFailure());
     }
   }
+  
+  // Search for a food by name, return the top 20 results
+  @override
+  Future<Either<Failure, List<FoodEntity>>> searchFood(String foodName) {
+    // TODO: implement searchFood
+    throw UnimplementedError();
+  }
 }
