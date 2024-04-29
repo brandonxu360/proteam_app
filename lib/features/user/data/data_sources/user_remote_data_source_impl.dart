@@ -117,4 +117,23 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       throw Exception('Unknown server error encountered');
     }
   }
+
+  @override
+  Future<void> updateUser(UserEntity user) async {
+    // Get the collection for users
+    final userCollection =
+        firebaseFirestore.collection(FirebaseCollectionConst.users);
+
+    Map<String, dynamic> userInfo = {};
+
+    if (user.username != '') {
+      userInfo['username'] = user.username;
+    }
+
+    if (user.pfpUrl != '' && user.pfpUrl != null) {
+      userInfo['pfpUrl'] = user.pfpUrl;
+    }
+
+    userCollection.doc(user.uid).update(userInfo);
+  }
 }

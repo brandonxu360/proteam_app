@@ -95,7 +95,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<Either<Failure, String>> registerWithEmail(
       String email, String password) async {
     try {
-      // Register the user with firebase
+      // Register the user
       final uid = await userRemoteDataSource.registerWithEmail(email, password);
 
       return Right(uid);
@@ -104,6 +104,19 @@ class UserRepositoryImpl implements UserRepository {
       return Left(AuthFailure(errorCode: e.code));
     } catch (e) {
       // Return a right ServerFailure to signify unexpected behavior from firebase auth
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateUser(UserEntity user) async {
+    try {
+      // Update the user doc
+      await userRemoteDataSource.updateUser(user);
+
+      // Return the updated user if the update was successful
+      return Right(user);
+    } catch (e) {
       return Left(ServerFailure());
     }
   }

@@ -17,6 +17,9 @@ class UserLoadSuccess extends UserState {
   final UserEntity user;
 
   const UserLoadSuccess({required this.user});
+
+  @override
+  List<Object> get props => [user];
 }
 
 // Failure state of retrieving a user - something went wrong when retrieving the user

@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:proteam_app/core/const/route_const.dart';
+import 'package:proteam_app/core/storage/storage_provider.dart';
+import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/core/theme/text_style.dart';
 import 'package:proteam_app/core/widgets/image_widget.dart';
 import 'package:proteam_app/core/widgets/toast_widget.dart';
@@ -37,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
             return const CircularProgressIndicator();
           } else if (state is UserLoadSuccess) {
             final user = state.user;
-            return showUserInfo(context, user);
+            return showProfile(context, user);
           } else {
             // Load failure
             return const Text(
@@ -48,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Column showUserInfo(BuildContext context, UserEntity user) {
+  Column showProfile(BuildContext context, UserEntity user) {
     return Column(
       children: [
         // Top bar
@@ -59,20 +64,49 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(width: 48),
             Column(
               children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 25),
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60),
-                  ),
-                  child: ClipRRect(
+                Stack(children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 25),
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(60),
-                      child: imageWidget(imageType: ImageType.profile)),
-                ),
+                    ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: imageWidget(
+                            imageUrl: user.pfpUrl,
+                            imageType: ImageType.profile)),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        pickImage().then((image) {
+                          if (image != null) {
+                            updatePfp(user, image);
+                          }
+                        });
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: khakiColor,
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          color: blackColor,
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                  )
+                ]),
                 const SizedBox(height: 20),
                 Text(user.username, style: Styles.title1),
-                const SizedBox(height: 10),
                 Text(user.email, style: Styles.bodyText2)
               ],
             ),
@@ -99,5 +133,36 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ],
     );
+  }
+
+  Future<File?> pickImage() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        return File(pickedFile.path);
+      }
+      return null;
+    } catch (e) {
+      toast('Failed to pick image: $e');
+      return null;
+    }
+  }
+
+  void updatePfp(UserEntity userEntity, File imageFile) {
+    try {
+      // Upload the image
+      StorageProviderRemoteDataSource.updateProfileImage(
+              file: imageFile, uid: userEntity.uid)
+          .then((pfpUrl) => // Update the user doc
+              BlocProvider.of<UserCubit>(context).updateUser(
+                  user: UserEntity(
+                      uid: userEntity.uid,
+                      email: userEntity.email,
+                      username: userEntity.username,
+                      pfpUrl: pfpUrl)));
+    } catch (e) {
+      toast("some error occured $e");
+    }
   }
 }

@@ -10,6 +10,7 @@ import 'package:proteam_app/features/user/domain/use_cases/auth/sign_in_with_ema
 import 'package:proteam_app/features/user/domain/use_cases/auth/sign_out_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/user/create_user_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/user/get_single_user_usecase.dart';
+import 'package:proteam_app/features/user/domain/use_cases/user/update_user_usecase.dart';
 import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dart';
 import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
 
@@ -23,7 +24,7 @@ Future<void> userInjectionContainer() async {
       createUserUseCase: sl.call(),
       signInWithEmailUseCase: sl.call()));
 
-  sl.registerFactory<UserCubit>(() => UserCubit(getSingleUserUseCase: sl.call()));
+  sl.registerFactory<UserCubit>(() => UserCubit(getSingleUserUseCase: sl.call(), updateUserUseCase: sl.call()));
 
   // * Use case injection
 
@@ -35,6 +36,7 @@ Future<void> userInjectionContainer() async {
 
   sl.registerLazySingleton(() => CreateUserUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => GetSingleUserUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => UpdateUserUseCase(repository: sl.call()));
 
   // * Repository and Data Source injection
   sl.registerLazySingleton<UserRepository>(
