@@ -7,8 +7,9 @@ import 'package:proteam_app/core/const/route_const.dart';
 import 'package:proteam_app/core/storage/storage_provider.dart';
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/core/theme/text_style.dart';
+import 'package:proteam_app/core/widgets/circularProgress_widget.dart';
 import 'package:proteam_app/core/widgets/image_widget.dart';
-import 'package:proteam_app/core/widgets/toast_widget.dart';
+import 'package:proteam_app/core/widgets/snackbar_widget.dart';
 import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dart';
 import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
@@ -83,9 +84,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     right: 0,
                     child: GestureDetector(
                       onTap: () {
-                        pickImage().then((image) {
+                        pickImage(context).then((image) async {
+                          // If an image was selected
                           if (image != null) {
-                            updatePfp(user, image);
+                            // Show a circular progress indicator while uploading the image
+                            circularProgress(context);
+
+                            // Upload the image and update the user doc
+                            await updatePfp(user, image, context)
+                                .then((value) => Navigator.pop(context));
                           }
                         });
                       },
@@ -119,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
                 // There was an error signing out
                 else if (state is SignOutError) {
-                  toast(
+                  snackBar(context,
                       'An unexpected sign out error occured, please try again later');
                 }
               },
@@ -135,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Future<File?> pickImage() async {
+  Future<File?> pickImage(context) async {
     try {
       final ImagePicker picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -144,25 +151,27 @@ class _ProfilePageState extends State<ProfilePage> {
       }
       return null;
     } catch (e) {
-      toast('Failed to pick image: $e');
+      snackBar(context, 'Failed to pick image: $e');
       return null;
     }
   }
 
-  void updatePfp(UserEntity userEntity, File imageFile) {
+  Future<void> updatePfp(UserEntity userEntity, File imageFile, context) async {
     try {
       // Upload the image
-      StorageProviderRemoteDataSource.updateProfileImage(
+      await StorageProviderRemoteDataSource.updateProfileImage(
               file: imageFile, uid: userEntity.uid)
-          .then((pfpUrl) => // Update the user doc
-              BlocProvider.of<UserCubit>(context).updateUser(
-                  user: UserEntity(
-                      uid: userEntity.uid,
-                      email: userEntity.email,
-                      username: userEntity.username,
-                      pfpUrl: pfpUrl)));
+          .then((pfpUrl) {
+        // Update the user doc
+        BlocProvider.of<UserCubit>(context).updateUser(
+            user: UserEntity(
+                uid: userEntity.uid,
+                email: userEntity.email,
+                username: userEntity.username,
+                pfpUrl: pfpUrl));
+      });
     } catch (e) {
-      toast("some error occured $e");
+      snackBar(context, "Some error occured when updating profile image: $e");
     }
   }
 }
