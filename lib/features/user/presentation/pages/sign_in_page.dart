@@ -5,7 +5,7 @@ import 'package:proteam_app/core/const/route_const.dart';
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/core/theme/text_style.dart';
 import 'package:proteam_app/core/utils/form_validation_helpers.dart';
-import 'package:proteam_app/core/widgets/toast_widget.dart';
+import 'package:proteam_app/core/widgets/snackbar_widget.dart';
 import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dart';
 
 class SignInPage extends StatefulWidget {
@@ -118,12 +118,12 @@ class _SignInPageState extends State<SignInPage> {
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
                           // Display a toast if sign in was not successful
-                          if (state is SignInFailure) {
-                            toast(
+                          if (state is SignInError) {
+                            snackBar(context,
                                 'An unexpected error occured, please try again later');
-                          } else if (state is SignInUnAuthenticated) {
-                            toast(
-                                'Sign in failed: ${state.signInErrorMessage}');
+                          } else if (state is SignInFailure) {
+                            snackBar(
+                                context, 'Sign in failed: ${state.feedback}');
                           }
 
                           // Navigate to the home page if the authentication was successful

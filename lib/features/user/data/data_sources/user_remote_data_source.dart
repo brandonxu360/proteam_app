@@ -21,4 +21,7 @@ abstract class UserRemoteDataSource {
 
   // Get the user entity (user details) of a single user using UID input
   Future<UserEntity> getSingleUser(String uid);
+
+  // Update an existing user with new user entity details
+  Future<void> updateUser(UserEntity user);
 }

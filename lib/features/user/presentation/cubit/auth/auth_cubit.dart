@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:proteam_app/core/error/failures.dart';
+import 'package:proteam_app/core/utils/string_conversion_helpers.dart';
 import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/get_current_uid_usecase.dart';
 import 'package:proteam_app/features/user/domain/use_cases/auth/is_signed_in_usecase.dart';
@@ -56,11 +57,11 @@ class AuthCubit extends Cubit<AuthState> {
     registrationResult.fold((l) {
       // Registration failed (email already in use, etc)
       if (l is AuthFailure) {
-        emit(RegisterUnAuthenticated(registerErrorMessage: l.errorCode));
+        emit(RegisterFailure(feedback: convertFirebaseAuthErrorCode(l.errorCode)));
       } 
       // Unexpected techincal error - server failure, etc.
       else {
-        emit(RegisterFailure());
+        emit(RegisterError());
       }
     }, (r) async {
       // Create the user record in the database if the user auth was successful
@@ -79,11 +80,11 @@ class AuthCubit extends Cubit<AuthState> {
     signInResult.fold((l) {
       // Authentication failure - incorrect credentials, etc.
       if (l is AuthFailure) {
-        emit(SignInUnAuthenticated(signInErrorMessage: l.errorCode));
+        emit(SignInFailure(feedback: convertFirebaseAuthErrorCode(l.errorCode)));
       }
       // Unexpected technical error - server failure, etc.
       else {
-        emit(SignInFailure());
+        emit(SignInError());
       }
     }, (r) => emit(SignInAuthenticated(uid: r)));
   }
@@ -95,6 +96,6 @@ class AuthCubit extends Cubit<AuthState> {
 
     // Sign the user out if the signout call was successful
     signoutResult.fold(
-        (l) => emit(AuthProcessFailure()), (r) => emit(UnAuthenticated()));
+        (l) => emit(AuthProcessError()), (r) => emit(UnAuthenticated()));
   }
 }

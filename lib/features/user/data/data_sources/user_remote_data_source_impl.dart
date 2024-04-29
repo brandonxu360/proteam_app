@@ -57,7 +57,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         .doc(uid)
         .get();
 
-    if (!userSnapshot.exists) {
+    if (userSnapshot.exists) {
       // Map the user document to a user model
       return UserModel.fromSnapshot(userSnapshot);
     } else {
@@ -116,5 +116,24 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     } catch (e) {
       throw Exception('Unknown server error encountered');
     }
+  }
+
+  @override
+  Future<void> updateUser(UserEntity user) async {
+    // Get the collection for users
+    final userCollection =
+        firebaseFirestore.collection(FirebaseCollectionConst.users);
+
+    Map<String, dynamic> userInfo = {};
+
+    if (user.username != '') {
+      userInfo['username'] = user.username;
+    }
+
+    if (user.pfpUrl != '' && user.pfpUrl != null) {
+      userInfo['pfpUrl'] = user.pfpUrl;
+    }
+
+    userCollection.doc(user.uid).update(userInfo);
   }
 }

@@ -3,7 +3,7 @@ import 'package:proteam_app/features/user/domain/entities/user_entity.dart';
 
 // Data model for user entities
 class UserModel extends UserEntity {
-  const UserModel({super.uid, super.username, super.email, super.pfpUrl});
+  const UserModel({required super.uid, required super.username, required super.email, super.pfpUrl});
 
   // Factory method to create user models from firestore document snapshots
   factory UserModel.fromSnapshot(DocumentSnapshot snapshot) {

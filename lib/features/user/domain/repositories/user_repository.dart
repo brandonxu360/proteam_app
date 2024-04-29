@@ -24,4 +24,7 @@ abstract class UserRepository {
 
   // Get the user entity (user details) of a single user using UID input
   Future<Either<Failure, UserEntity>> getSingleUser(String uid);
+
+  // Update an existing user with new user entity details
+  Future<Either<Failure, UserEntity>> updateUser(UserEntity user);
 }

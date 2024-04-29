@@ -30,27 +30,37 @@ class SignInAuthenticated extends Authenticated {
 // State that user is unauthenticated
 class UnAuthenticated extends AuthState {}
 
-class RegisterUnAuthenticated extends UnAuthenticated {
-  final String registerErrorMessage;
-
-  RegisterUnAuthenticated({required this.registerErrorMessage});
-}
-
-class SignInUnAuthenticated extends UnAuthenticated {
-  final String signInErrorMessage;
-
-  SignInUnAuthenticated({required this.signInErrorMessage});
-}
-
 // State that an auth process is currently in progress
 class AuthProcessInProgress extends AuthState {}
 
 class RegisterInProgress extends AuthProcessInProgress {}
+
 class SignInInProgress extends AuthProcessInProgress {}
 
-// State that an auth process encountered an error
-class AuthProcessFailure extends AuthState {}
+// State the an auth process failed to authenticate the user
+class AuthProcessFailure extends AuthState {
+  // Attempt feedback (ie. invalid credentials, email already in use, etc.)
+  final String feedback;
 
-class RegisterFailure extends AuthProcessFailure {}
+  const AuthProcessFailure({required this.feedback});
 
-class SignInFailure extends AuthProcessFailure {}
+  @override
+  List<Object> get props => [feedback];
+}
+
+class RegisterFailure extends AuthProcessFailure {
+  const RegisterFailure({required super.feedback});
+}
+
+class SignInFailure extends AuthProcessFailure {
+  const SignInFailure({required super.feedback});
+}
+
+// State that an auth process encountered an error (ie. server failure, firebase backend failure)
+class AuthProcessError extends AuthState {}
+
+class RegisterError extends AuthProcessError {}
+
+class SignInError extends AuthProcessError {}
+
+class SignOutError extends AuthProcessError {}

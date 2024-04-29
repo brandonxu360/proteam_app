@@ -4,7 +4,7 @@ import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/core/theme/text_style.dart';
 import 'package:proteam_app/core/utils/form_validation_helpers.dart';
 import 'package:proteam_app/core/widgets/image_widget.dart';
-import 'package:proteam_app/core/widgets/toast_widget.dart';
+import 'package:proteam_app/core/widgets/snackbar_widget.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 import 'package:proteam_app/features/food/presentation/cubit/food_cubit.dart';
 
@@ -294,6 +294,6 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
             calories: int.parse(_caloriesController.text),
             carbs: int.parse(_carbsController.text),
             protein: int.parse(_proteinController.text),
-            fat: int.parse(_fatsController.text))).then((value) => toast('Food added'));
+            fat: int.parse(_fatsController.text))).then((value) => snackBar(context, 'Food added'));
   }
 }

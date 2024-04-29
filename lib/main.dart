@@ -7,6 +7,7 @@ import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/features/food/presentation/cubit/food_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dart';
+import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
 import 'package:proteam_app/features/user/presentation/pages/sign_in_page.dart';
 import 'firebase_options.dart';
 
@@ -32,7 +33,8 @@ class MainApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => di.sl<AuthCubit>()..appStart()),
-        BlocProvider(create: (context) => di.sl<FoodCubit>())
+        BlocProvider(create: (context) => di.sl<FoodCubit>()),
+        BlocProvider(create: (context) => di.sl<UserCubit>())
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
