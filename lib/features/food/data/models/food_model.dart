@@ -26,14 +26,39 @@ class FoodModel extends FoodEntity {
         fat: snap['fat']);
   }
 
+  // Factory to create FoodModel instances from json (api calls)
+  factory FoodModel.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      {
+        'name': String name,
+        'servingSize': int servingSize,
+        'servingSizeUnit': String servingSizeUnit,
+        'calories': int calories,
+        'carbs': int carbs,
+        'protein': int protein,
+        'fat': int fat,
+      } =>
+        FoodModel(
+          name: name,
+          servingSize: servingSize,
+          servingSizeUnit: servingSizeUnit,
+          calories: calories,
+          carbs: carbs,
+          protein: protein,
+          fat: fat
+        ),
+      _ => throw const FormatException('Failed to load FoodModel from json'),
+    };
+  }
+
   // Convert FoodModel to firebase document map
   Map<String, dynamic> toDocument() => {
-    'name': name,
-    'servingSize': servingSize,
-    'servingSizeUnit': servingSizeUnit,
-    'calories': calories,
-    'carbs': carbs,
-    'protein': protein,
-    'fat': fat,
-  };
+        'name': name,
+        'servingSize': servingSize,
+        'servingSizeUnit': servingSizeUnit,
+        'calories': calories,
+        'carbs': carbs,
+        'protein': protein,
+        'fat': fat,
+      };
 }
