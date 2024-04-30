@@ -43,7 +43,7 @@ class FoodCubit extends Cubit<FoodState> {
     result.fold((l) => emit(FoodFailure()), (r) => emit(FoodDeleteSuccess()));
   }
 
-  // Get the list of existing foods
+  // Get the list of existing foods (firebase)
   Future<void> getFoods() async {
 
     // Emit the loading state

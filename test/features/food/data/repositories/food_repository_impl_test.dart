@@ -2,27 +2,34 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:proteam_app/core/error/failures.dart';
+import 'package:proteam_app/features/food/data/data_sources/food_api_data_source.dart';
 import 'package:proteam_app/features/food/data/data_sources/food_remote_data_source.dart';
 import 'package:proteam_app/features/food/data/repositories/food_repository_impl.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
+import 'package:proteam_app/features/food/domain/repositories/food_repository.dart';
 
 // Mock remote food datasource implementation
-class MockFoodRemoteDataSourceImpl extends Mock
+class MockFoodRemoteDataSource extends Mock
     implements FoodRemoteDataSource {}
+
+class MockFoodApiDataSource extends Mock implements FoodApiDataSource {}
 
 // Food repository implementation tests
 void main() {
   // The food repository implementation depends on the foodRemoteDataSource (abstraction)
   late FoodRemoteDataSource foodRemoteDataSource;
-  late FoodRepositoryImpl foodRepositoryImpl;
+  late FoodRepository foodRepository;
+  late FoodApiDataSource foodApiDataSource;
 
   // Dummy food entity for the createFood group
   late FoodEntity testFoodEntity;
 
   setUp(() {
-    foodRemoteDataSource = MockFoodRemoteDataSourceImpl();
-    foodRepositoryImpl =
-        FoodRepositoryImpl(foodRemoteDataSource: foodRemoteDataSource);
+    foodRemoteDataSource = MockFoodRemoteDataSource();
+    foodApiDataSource = MockFoodApiDataSource();
+    foodRepository = FoodRepositoryImpl(
+      foodRemoteDataSource: foodRemoteDataSource, foodApiDataSource: foodApiDataSource,
+    );
   });
 
   setUpAll(() {
@@ -59,7 +66,7 @@ void main() {
           .thenAnswer((_) async => Future.value());
 
       // * Act
-      final result = await foodRepositoryImpl.createFood(testFoodEntity);
+      final result = await foodRepository.createFood(testFoodEntity);
 
       // * Assert
 
@@ -81,7 +88,7 @@ void main() {
           .thenThrow(Exception('Failed to create food'));
 
       // * Act
-      final result = await foodRepositoryImpl.createFood(testFoodEntity);
+      final result = await foodRepository.createFood(testFoodEntity);
 
       // * Assert
 
@@ -106,7 +113,7 @@ void main() {
           .thenAnswer((_) async => Future.value());
 
       // * Act
-      final result = await foodRepositoryImpl.deleteFood(testFoodEntity);
+      final result = await foodRepository.deleteFood(testFoodEntity);
 
       // * Assert
 
@@ -128,7 +135,7 @@ void main() {
           .thenThrow(Exception('Failed to delete food'));
 
       // * Act
-      final result = await foodRepositoryImpl.deleteFood(testFoodEntity);
+      final result = await foodRepository.deleteFood(testFoodEntity);
 
       // * Assert
 
@@ -152,7 +159,7 @@ void main() {
       when(() => foodRemoteDataSource.getFoods()).thenAnswer((_) async => []);
 
       // * Act
-      final result = await foodRepositoryImpl.getFoods();
+      final result = await foodRepository.getFoods();
 
       // * Assert
 
@@ -174,7 +181,7 @@ void main() {
           .thenThrow(Exception('Failed to get foods'));
 
       // * Act
-      final result = await foodRepositoryImpl.getFoods();
+      final result = await foodRepository.getFoods();
 
       // * Assert
 

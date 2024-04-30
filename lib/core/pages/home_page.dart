@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:proteam_app/core/const/route_const.dart';
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/features/log/presentation/pages/dashboard_page.dart';
 import 'package:proteam_app/features/log/presentation/pages/log_page.dart';
+import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
 import 'package:proteam_app/features/user/presentation/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,13 +27,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    // Get the current user
+    BlocProvider.of<UserCubit>(context).getSingleUser(uid: widget.uid);
+
     screenIndex = 0;
 
-    homePages = [
-      const DashboardPage(),
-      const LogPage(),
-      ProfilePage(uid: widget.uid)
-    ];
+    homePages = [const DashboardPage(), const LogPage(), const ProfilePage()];
     super.initState();
   }
 
@@ -81,6 +83,18 @@ class _HomePageState extends State<HomePage> {
                   }),
                 }),
       ]),
+      floatingActionButton: (screenIndex == 0)
+          ? FloatingActionButton.extended(
+              backgroundColor: blackColor,
+              label: const Text('Log Food', style: TextStyle(color: boneColor)),
+              icon: const Icon(
+                Icons.draw,
+                color: boneColor,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, RouteConst.searchFoodPage);
+              })
+          : null,
     );
   }
 }

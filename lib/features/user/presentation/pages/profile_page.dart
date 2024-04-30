@@ -15,23 +15,15 @@ import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dar
 import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
 
 class ProfilePage extends StatefulWidget {
-  // The uid of the user currently signed in
-  final String uid;
 
-  const ProfilePage({super.key, required this.uid});
+
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  @override
-  void initState() {
-    // Get the current user
-    BlocProvider.of<UserCubit>(context).getSingleUser(uid: widget.uid);
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

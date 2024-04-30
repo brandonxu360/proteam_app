@@ -26,20 +26,28 @@ class FoodApiDataSourceImpl extends FoodApiDataSource {
 
       final List<FoodEntity> foods = [];
 
-      // Iterate through the first 20 items or until the end of the list
-      for (var i = 0; i < foodsJson.length && i < 20; i++) {
+      int parsedCount = 0; // Track the number of successfully parsed items
+
+      // Iterate through the list until we reach the desired count of 20 or the end of the list
+      for (var i = 0; parsedCount < 20 && i < foodsJson.length; i++) {
         final foodJson = foodsJson[i];
-        final foodModel = FoodModel.fromJson(foodJson);
-        final foodEntity = FoodEntity(
-          name: foodModel.name,
-          servingSize: foodModel.servingSize,
-          servingSizeUnit: foodModel.servingSizeUnit,
-          calories: foodModel.calories,
-          carbs: foodModel.carbs,
-          protein: foodModel.protein,
-          fat: foodModel.fat,
-        );
-        foods.add(foodEntity);
+
+        try {
+          final foodModel = FoodModel.fromJson(foodJson);
+          final foodEntity = FoodEntity(
+            name: foodModel.name,
+            servingSize: foodModel.servingSize,
+            servingSizeUnit: foodModel.servingSizeUnit,
+            calories: foodModel.calories,
+            carbs: foodModel.carbs,
+            protein: foodModel.protein,
+            fat: foodModel.fat,
+          );
+          foods.add(foodEntity);
+          parsedCount++; // Increment the count of successfully parsed items
+        } catch (e) {
+          print('Skipping food item due to parsing error: $e');
+        }
       }
 
       return foods;
