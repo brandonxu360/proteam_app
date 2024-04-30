@@ -4,12 +4,12 @@ import 'package:equatable/equatable.dart';
 /// ie. banana, dumpling, chicken pot pie
 class FoodEntity extends Equatable {
   final String name;
-  final int servingSize;
+  final double servingSize;
   final String servingSizeUnit;
-  final int calories;
-  final int carbs;
-  final int protein;
-  final int fat;
+  final double calories;
+  final double carbs;
+  final double protein;
+  final double fat;
 
   const FoodEntity(
       {required this.name,

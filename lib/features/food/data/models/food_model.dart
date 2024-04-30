@@ -28,27 +28,50 @@ class FoodModel extends FoodEntity {
 
   // Factory to create FoodModel instances from json (api calls)
   factory FoodModel.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'name': String name,
-        'servingSize': int servingSize,
-        'servingSizeUnit': String servingSizeUnit,
-        'calories': int calories,
-        'carbs': int carbs,
-        'protein': int protein,
-        'fat': int fat,
-      } =>
-        FoodModel(
-          name: name,
-          servingSize: servingSize,
-          servingSizeUnit: servingSizeUnit,
-          calories: calories,
-          carbs: carbs,
-          protein: protein,
-          fat: fat
-        ),
-      _ => throw const FormatException('Failed to load FoodModel from json'),
-    };
+    final name = json['description'] as String?;
+    final servingSize = double.tryParse(json['servingSize'].toString());
+    final servingSizeUnit = json['servingSizeUnit'] as String?;
+
+    // Extracting nutrient values
+    final foodNutrients = json['foodNutrients'] as List<dynamic>?;
+
+    // Helper method to extract nutrient value by name
+    double? extractNutrientValue(String nutrientName) {
+      final nutrient = foodNutrients?.firstWhere(
+        (nutrient) => nutrient['nutrientName'] == nutrientName,
+        orElse: () => null,
+      );
+      return nutrient != null
+          ? double.tryParse(nutrient['value'].toString())
+          : null;
+    }
+
+    // Extract nutrient values
+    final protein = extractNutrientValue('Protein');
+    final fat = extractNutrientValue('Total lipid (fat)');
+    final carbs = extractNutrientValue('Carbohydrate, by difference');
+    final calories = extractNutrientValue('Energy');
+
+    // Check if any of the required fields is missing
+    if (name == null ||
+        servingSize == null ||
+        servingSizeUnit == null ||
+        protein == null ||
+        fat == null ||
+        carbs == null ||
+        calories == null) {
+      throw const FormatException('Failed to load FoodModel from json');
+    }
+
+    return FoodModel(
+      name: name,
+      servingSize: servingSize,
+      servingSizeUnit: servingSizeUnit,
+      calories: calories,
+      carbs: carbs,
+      protein: protein,
+      fat: fat,
+    );
   }
 
   // Convert FoodModel to firebase document map

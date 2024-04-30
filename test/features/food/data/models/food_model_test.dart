@@ -58,12 +58,12 @@ void main() {
     // Add data to the snapshot
     await collection.doc(documentId).set({
       'name': 'Banana',
-      'servingSize': 1,
+      'servingSize': 1.0,
       'servingSizeUnit': 'unit',
-      'calories': 110,
-      'carbs': 28,
-      'protein': 1,
-      'fat': 0,
+      'calories': 110.0,
+      'carbs': 28.0,
+      'protein': 1.0,
+      'fat': 0.0,
     });
 
     // Retrieve the snapshot after the data is set
