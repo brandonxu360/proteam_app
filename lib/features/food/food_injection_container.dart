@@ -1,5 +1,7 @@
 import 'package:http/http.dart';
 import 'package:proteam_app/core/services/main_injection_container.dart';
+import 'package:proteam_app/features/food/data/data_sources/food_api_data_source.dart';
+import 'package:proteam_app/features/food/data/data_sources/food_api_data_source_impl.dart';
 import 'package:proteam_app/features/food/data/data_sources/food_remote_data_source.dart';
 import 'package:proteam_app/features/food/data/data_sources/food_remote_data_source_impl.dart';
 import 'package:proteam_app/features/food/data/repositories/food_repository_impl.dart';
@@ -35,4 +37,7 @@ Future<void> foodInjectionContainer() async {
 
   sl.registerLazySingleton<FoodRemoteDataSource>(
       () => FoodRemoteDataSourceImpl(firebaseFirestore: sl.call()));
+
+  sl.registerLazySingleton<FoodApiDataSource>(
+      () => FoodApiDataSourceImpl(client: sl.call()));
 }

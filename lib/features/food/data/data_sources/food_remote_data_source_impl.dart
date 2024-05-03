@@ -17,6 +17,7 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
       // Convert food entity to firestore-compatible map
       final foodMap = FoodModel(
               name: food.name,
+              brand: food.brand,
               servingSize: food.servingSize,
               servingSizeUnit: food.servingSizeUnit,
               calories: food.calories,

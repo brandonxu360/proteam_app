@@ -19,7 +19,7 @@ class FoodSearchCubit extends Cubit<FoodSearchState> {
     final searchResult = await searchFoodUseCase.call(foodName);
 
     // Emit a state depending on success or failure
-    searchResult.fold(
-        (l) => emit(FoodSearchFailure()), (r) => FoodSearchSuccess(foods: r));
+    searchResult.fold((l) => emit(FoodSearchFailure()),
+        (r) => emit(FoodSearchSuccess(foods: r)));
   }
 }

@@ -10,20 +10,25 @@ class FoodApiDataSourceImpl extends FoodApiDataSource {
 
   FoodApiDataSourceImpl({required this.client});
 
+  // Query and return the top 20 query results for foods of type Branded and FNDDS (survey) from FoodData Central
   @override
   Future<List<FoodEntity>> searchFood(String foodName) async {
     final apiKey = Env.fdcApiKey;
 
-    // Note that Uri.parse will automatically convert the spaces in the foodName to %20
+    // Create the query
     final url = Uri.parse(
-        'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=$apiKey&query=$foodName');
+        'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=$apiKey&query=$foodName&dataType=Branded,Survey%20(FNDDS)');
 
+    // Make the query
     final response = await client.get(url);
 
+    // If successful (success response code) attempt to parse 20 food entities from the json response
     if (response.statusCode == 200) {
+      // Get the individual food jsons
       final json = jsonDecode(response.body);
       final List<dynamic> foodsJson = json['foods'];
 
+      // Initialize an empty list to hold the successfully parsed food entities
       final List<FoodEntity> foods = [];
 
       int parsedCount = 0; // Track the number of successfully parsed items
@@ -34,15 +39,7 @@ class FoodApiDataSourceImpl extends FoodApiDataSource {
 
         try {
           final foodModel = FoodModel.fromJson(foodJson);
-          final foodEntity = FoodEntity(
-            name: foodModel.name,
-            servingSize: foodModel.servingSize,
-            servingSizeUnit: foodModel.servingSizeUnit,
-            calories: foodModel.calories,
-            carbs: foodModel.carbs,
-            protein: foodModel.protein,
-            fat: foodModel.fat,
-          );
+          final foodEntity = foodModel.toFoodEntity();
           foods.add(foodEntity);
           parsedCount++; // Increment the count of successfully parsed items
         } catch (e) {
