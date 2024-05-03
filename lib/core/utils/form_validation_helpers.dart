@@ -7,8 +7,8 @@ bool notEmptyCheck(value) {
 }
 
 // Checks if the value is a valid positive integer
-bool positiveIntegerCheck(value) {
-  int? parsedValue = int.tryParse(value);
+bool positiveDoubleCheck(value) {
+  double? parsedValue = double.tryParse(value);
   if (parsedValue == null || parsedValue < 0) {
     return false;
   }

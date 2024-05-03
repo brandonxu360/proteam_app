@@ -16,13 +16,15 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
     try {
       // Convert food entity to firestore-compatible map
       final foodMap = FoodModel(
-          name: food.name,
-          servingSize: food.servingSize,
-          servingSizeUnit: food.servingSizeUnit,
-          calories: food.calories,
-          carbs: food.carbs,
-          protein: food.protein,
-          fat: food.fat).toDocument();
+              name: food.name,
+              brand: food.brand,
+              servingSize: food.servingSize,
+              servingSizeUnit: food.servingSizeUnit,
+              calories: food.calories,
+              carbs: food.carbs,
+              protein: food.protein,
+              fat: food.fat)
+          .toDocument();
 
       // Add the food to the foods collection
       await firebaseFirestore
@@ -64,5 +66,11 @@ class FoodRemoteDataSourceImpl extends FoodRemoteDataSource {
     } catch (e) {
       throw Exception('Failed to get foods: $e');
     }
+  }
+
+  @override
+  Future<List<FoodEntity>> searchFood(String foodName) {
+    // TODO: implement searchFood
+    throw UnimplementedError();
   }
 }

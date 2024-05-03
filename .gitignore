@@ -138,3 +138,9 @@ lib/generated_plugin_registrant.dart
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,visualstudiocode,firebase
+
+# exclude all .env files from source control
+*.env
+
+# exclude the API key from version control
+env.g.dart

@@ -1,13 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:proteam_app/core/error/failures.dart';
+import 'package:proteam_app/features/food/data/data_sources/food_api_data_source.dart';
 import 'package:proteam_app/features/food/data/data_sources/food_remote_data_source.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 import 'package:proteam_app/features/food/domain/repositories/food_repository.dart';
 
 class FoodRepositoryImpl extends FoodRepository {
   final FoodRemoteDataSource foodRemoteDataSource;
+  final FoodApiDataSource foodApiDataSource;
 
-  FoodRepositoryImpl({required this.foodRemoteDataSource});
+  FoodRepositoryImpl(
+      {required this.foodRemoteDataSource, required this.foodApiDataSource});
 
   @override
   Future<Either<Failure, void>> createFood(FoodEntity food) async {
@@ -47,6 +50,21 @@ class FoodRepositoryImpl extends FoodRepository {
       return Right(foods);
     } catch (e) {
       // Return a failure on an error
+      return Left(ServerFailure());
+    }
+  }
+
+  // Search for a food by name, return the top 20 results
+  @override
+  Future<Either<Failure, List<FoodEntity>>> searchFood(String foodName) async {
+    try {
+      // Query the food api data source
+      final apiFoods = await foodApiDataSource.searchFood(foodName);
+
+      // TODO: integrate firebase food database results
+
+      return Right(apiFoods);
+    } catch (e) {
       return Left(ServerFailure());
     }
   }

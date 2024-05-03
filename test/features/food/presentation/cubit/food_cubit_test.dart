@@ -7,7 +7,7 @@ import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 import 'package:proteam_app/features/food/domain/usecases/create_food_usecase.dart';
 import 'package:proteam_app/features/food/domain/usecases/delete_food_usecase.dart';
 import 'package:proteam_app/features/food/domain/usecases/get_foods_usecase.dart';
-import 'package:proteam_app/features/food/presentation/cubit/food_cubit.dart';
+import 'package:proteam_app/features/food/presentation/cubit/food_cubit/food_cubit.dart';
 
 // Mocked usecase dependencies
 class MockCreateFoodUseCase extends Mock implements CreateFoodUseCase {}

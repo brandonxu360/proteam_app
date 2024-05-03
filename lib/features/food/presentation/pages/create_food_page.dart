@@ -6,7 +6,7 @@ import 'package:proteam_app/core/utils/form_validation_helpers.dart';
 import 'package:proteam_app/core/widgets/image_widget.dart';
 import 'package:proteam_app/core/widgets/snackbar_widget.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
-import 'package:proteam_app/features/food/presentation/cubit/food_cubit.dart';
+import 'package:proteam_app/features/food/presentation/cubit/food_cubit/food_cubit.dart';
 
 class CreateFoodPage extends StatefulWidget {
   const CreateFoodPage({super.key});
@@ -122,8 +122,8 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                           return 'Please enter a value';
                         }
                         if (!notEmptyCheck(value) ||
-                            !positiveIntegerCheck(value)) {
-                          return 'Please enter a positive integer';
+                            !positiveDoubleCheck(value)) {
+                          return 'Please enter a positive value';
                         }
                         return null;
                       },
@@ -167,8 +167,8 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                   if (!notEmptyCheck(value)) {
                     return 'Please enter a value';
                   }
-                  if (!notEmptyCheck(value) || !positiveIntegerCheck(value)) {
-                    return 'Please enter a positive integer';
+                  if (!notEmptyCheck(value) || !positiveDoubleCheck(value)) {
+                    return 'Please enter a positive value';
                   }
                   return null;
                 },
@@ -189,8 +189,8 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                   if (!notEmptyCheck(value)) {
                     return 'Please enter a value';
                   }
-                  if (!notEmptyCheck(value) || !positiveIntegerCheck(value)) {
-                    return 'Please enter a positive integer';
+                  if (!notEmptyCheck(value) || !positiveDoubleCheck(value)) {
+                    return 'Please enter a positive value';
                   }
                   return null;
                 },
@@ -211,8 +211,8 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                   if (!notEmptyCheck(value)) {
                     return 'Please enter a value';
                   }
-                  if (!notEmptyCheck(value) || !positiveIntegerCheck(value)) {
-                    return 'Please enter a positive integer';
+                  if (!notEmptyCheck(value) || !positiveDoubleCheck(value)) {
+                    return 'Please enter a positive value';
                   }
                   return null;
                 },
@@ -233,8 +233,8 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
                   if (!notEmptyCheck(value)) {
                     return 'Please enter a value';
                   }
-                  if (!notEmptyCheck(value) || !positiveIntegerCheck(value)) {
-                    return 'Please enter a positive integer';
+                  if (!notEmptyCheck(value) || !positiveDoubleCheck(value)) {
+                    return 'Please enter a positive value';
                   }
                   return null;
                 },
@@ -289,11 +289,11 @@ class _CreateFoodPageState extends State<CreateFoodPage> {
     BlocProvider.of<FoodCubit>(context).createFood(
         food: FoodEntity(
             name: _nameController.text,
-            servingSize: int.parse(_servingsController.text),
+            servingSize: double.parse(_servingsController.text),
             servingSizeUnit: _unitsController.text,
-            calories: int.parse(_caloriesController.text),
-            carbs: int.parse(_carbsController.text),
-            protein: int.parse(_proteinController.text),
-            fat: int.parse(_fatsController.text))).then((value) => snackBar(context, 'Food added'));
+            calories: double.parse(_caloriesController.text),
+            carbs: double.parse(_carbsController.text),
+            protein: double.parse(_proteinController.text),
+            fat: double.parse(_fatsController.text))).then((value) => snackBar(context, 'Food added'));
   }
 }

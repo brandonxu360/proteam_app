@@ -4,15 +4,17 @@ import 'package:equatable/equatable.dart';
 /// ie. banana, dumpling, chicken pot pie
 class FoodEntity extends Equatable {
   final String name;
-  final int servingSize;
+  final String? brand;
+  final double servingSize;
   final String servingSizeUnit;
-  final int calories;
-  final int carbs;
-  final int protein;
-  final int fat;
+  final double calories;
+  final double carbs;
+  final double protein;
+  final double fat;
 
   const FoodEntity(
-      {required this.name,
+      {this.brand,
+      required this.name,
       required this.servingSize,
       required this.servingSizeUnit,
       required this.calories,
@@ -22,5 +24,5 @@ class FoodEntity extends Equatable {
 
   // Compare by name
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [name, brand];
 }
