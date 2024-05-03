@@ -36,8 +36,8 @@ class FoodListTile extends StatelessWidget {
           subtitle: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('${food.servingSize} ${food.servingSizeUnit}, '),
-              Text('${food.calories} cals'),
+              Text('${food.calories} cals, '),
+              Text('${food.servingSize} ${food.servingSizeUnit}'),
             ],
           ),
           trailing: const Icon(FontAwesomeIcons.plus, color: raisinBlackColor),
