@@ -5,4 +5,7 @@ class FirebaseCollectionConst {
 
   // Users collection
   static const String users = 'users';
+
+  // Log collection (embedded in each user document)
+  static const String log = 'log';
 }

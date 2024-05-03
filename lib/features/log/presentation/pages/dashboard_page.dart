@@ -5,6 +5,7 @@ import 'package:proteam_app/core/utils/date_helpers.dart';
 import 'package:proteam_app/core/widgets/image_widget.dart';
 import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
 
+// Dashboard/landing page
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
@@ -50,7 +51,7 @@ class DashboardPage extends StatelessWidget {
                                     ))
                               ]),
                           const SizedBox(height: 2),
-                          Text(formatDate(DateTime.now()),
+                          Text(formatDateLDF(DateTime.now()),
                               style: const TextStyle(
                                 color: blackColor,
                                 fontSize: 20.0,

@@ -9,6 +9,6 @@ class SearchFoodUseCase {
   SearchFoodUseCase({required this.foodRepository});
 
   Future<Either<Failure, List<FoodEntity>>> call(String foodName) async {
-    return await foodRepository.searchFood(foodName);
+    return foodRepository.searchFood(foodName);
   }
 }

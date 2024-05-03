@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 20),
                   Text(
                     'Proteam',
-                    style: Styles.title1,
+                    style: Styles.title2,
                   )
                 ],
               ),

@@ -39,7 +39,7 @@ void main() {
       expect(foods[1], isA<FoodEntity>());
 
       // Validate the content of the first food entity
-      expect(foods[0].name, 'CHEDDAR CHEESE');
+      expect(foods[0].name, 'Cheddar Cheese');
       expect(foods[0].servingSize, 28);
       expect(foods[0].servingSizeUnit, 'g');
       expect(foods[0].calories, 393);
@@ -48,7 +48,7 @@ void main() {
       expect(foods[0].fat, 32.1);
 
       // Validate the content of the second food entity
-      expect(foods[1].name, 'CHEDDAR CHEESE');
+      expect(foods[1].name, 'Cheddar Cheese');
       expect(foods[1].servingSize, 28);
       expect(foods[1].servingSizeUnit, 'g');
       expect(foods[1].calories, 432);

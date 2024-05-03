@@ -43,6 +43,7 @@ void main() {
       // Assert that the document holds the expected data
       expect(data, {
         'name': 'Banana',
+        'brand': null,
         'servingSize': 1,
         'servingSizeUnit': 'unit',
         'calories': 110,

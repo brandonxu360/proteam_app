@@ -9,7 +9,7 @@ class CreateFoodUseCase {
   CreateFoodUseCase({required this.foodRepository});
 
   Future<Either<Failure, void>> call(FoodEntity foodEntity) async {
-    return await foodRepository.createFood(foodEntity);
+    return foodRepository.createFood(foodEntity);
   }
   
 }
