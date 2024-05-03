@@ -9,6 +9,7 @@ environment:
 dependencies:
   bloc: ^8.1.4
   cached_network_image: ^3.3.1
+  carousel_slider: ^4.2.1
   cloud_firestore: ^4.16.0
   dartz: ^0.10.1
   envied: ^0.5.4+1

@@ -23,3 +23,15 @@ String decodeDateFromFirestore(String encodedDate) {
   // Decode the Firestore document ID back into date format
   return encodedDate.replaceAll('-', '/'); // Replace dashes with slashes
 }
+
+// Return the day of the year (out of 365)
+int dayOfYear(DateTime date) {
+  // Create a DateTime object for the start of the year
+  DateTime startOfYear = DateTime(date.year, 1, 1);
+
+  // Calculate the difference between the given date and the start of the year
+  Duration difference = date.difference(startOfYear);
+
+  // Return the number of days in the difference
+  return difference.inDays + 1; // Add 1 because difference is zero-based
+}
