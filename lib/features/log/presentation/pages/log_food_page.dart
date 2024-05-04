@@ -82,7 +82,7 @@ class _LogFoodPageState extends State<LogFoodPage> {
                       if (state is FoodLogSuccess) {
                         // Navigate back to the home page
                         Navigator.popUntil(
-                            context, (route) => route.settings.name == '/');
+                            context, (route) => route.isFirst);
 
                         // Inform the user that the food was logged
                         snackBar(context, 'Successfully logged food');

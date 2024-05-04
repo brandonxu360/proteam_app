@@ -32,7 +32,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     // Try to update or create user in collection
     try {
-      userCollection.doc(user.uid).get().then((userDoc) {
+      await userCollection.doc(user.uid).get().then((userDoc) {
         if (!userDoc.exists) {
           userCollection.doc(user.uid).set(newUser);
         } else {
