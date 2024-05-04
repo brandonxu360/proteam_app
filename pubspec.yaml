@@ -9,6 +9,7 @@ environment:
 dependencies:
   bloc: ^8.1.4
   cached_network_image: ^3.3.1
+  carousel_slider: ^4.2.1
   cloud_firestore: ^4.16.0
   dartz: ^0.10.1
   envied: ^0.5.4+1
@@ -18,6 +19,7 @@ dependencies:
   firebase_auth_mocks: ^0.13.0
   firebase_core: ^2.30.0
   firebase_storage: ^11.7.4
+  fl_chart: ^0.67.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5

@@ -6,6 +6,7 @@ import 'package:proteam_app/core/services/main_injection_container.dart' as di;
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/features/food/presentation/cubit/food_cubit/food_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:proteam_app/features/log/presentation/cubit/day_log/day_log_cubit.dart';
 import 'package:proteam_app/features/user/presentation/cubit/auth/auth_cubit.dart';
 import 'package:proteam_app/features/user/presentation/cubit/user/user_cubit.dart';
 import 'package:proteam_app/features/user/presentation/pages/sign_in_page.dart';
@@ -34,7 +35,8 @@ class MainApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => di.sl<AuthCubit>()..appStart()),
         BlocProvider(create: (context) => di.sl<FoodCubit>()),
-        BlocProvider(create: (context) => di.sl<UserCubit>())
+        BlocProvider(create: (context) => di.sl<UserCubit>()),
+        BlocProvider(create: (context) => di.sl<DayLogCubit>())
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

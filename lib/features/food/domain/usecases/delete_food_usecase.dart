@@ -9,7 +9,7 @@ class DeleteFoodUseCase {
   DeleteFoodUseCase({required this.foodRepository});
 
   Future<Either<Failure, void>> call(FoodEntity foodEntity) async {
-    return await foodRepository.deleteFood(foodEntity);
+    return foodRepository.deleteFood(foodEntity);
   }
   
 }

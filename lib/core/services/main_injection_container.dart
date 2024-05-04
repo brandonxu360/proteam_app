@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:proteam_app/features/food/food_injection_container.dart';
+import 'package:proteam_app/features/log/log_injection_container.dart';
 import 'package:proteam_app/features/user/user_injection_container.dart';
 
 // Main service locator instance
@@ -17,4 +18,5 @@ Future<void> init() async {
 
   await foodInjectionContainer();
   await userInjectionContainer();
+  await logInjectionContainer();
 }

@@ -34,7 +34,7 @@ class _SearchFoodPageState extends State<SearchFoodPage> {
             appBar: AppBar(
               centerTitle: true,
               elevation: 0,
-              title: const Text('Log Food', style: Styles.headline1),
+              title: const Text('Select Food', style: Styles.headline1),
               backgroundColor: raisinBlackColor,
               surfaceTintColor: raisinBlackColor,
             ),

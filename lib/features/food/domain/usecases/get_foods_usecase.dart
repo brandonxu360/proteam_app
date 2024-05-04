@@ -9,7 +9,7 @@ class GetFoodsUseCase {
   GetFoodsUseCase({required this.foodRepository});
 
   Future<Either<Failure, List<FoodEntity>>> call() async {
-    return await foodRepository.getFoods();
+    return foodRepository.getFoods();
   }
   
 }

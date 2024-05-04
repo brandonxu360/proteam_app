@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:proteam_app/core/const/route_const.dart';
 import 'package:proteam_app/core/theme/color_style.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 
@@ -13,7 +14,9 @@ class FoodListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, RouteConst.logFoodPage, arguments: food);
+        },
         child: ListTile(
           tileColor: boneColor,
           textColor: blackColor,
@@ -33,8 +36,8 @@ class FoodListTile extends StatelessWidget {
           subtitle: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('${food.servingSize} ${food.servingSizeUnit}, '),
-              Text('${food.calories} cals'),
+              Text('${food.calories} cals, '),
+              Text('${food.servingSize} ${food.servingSizeUnit}'),
             ],
           ),
           trailing: const Icon(FontAwesomeIcons.plus, color: raisinBlackColor),

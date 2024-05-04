@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Styles {
-  static const Color primaryColor = Colors.blue;
+  static const TextStyle title1 =
+      TextStyle(fontSize: 38, fontWeight: FontWeight.bold);
 
-  static const TextStyle title1 = TextStyle(
-    fontSize: 34,
-    fontWeight: FontWeight.bold
-  );
+  static const TextStyle title2 =
+      TextStyle(fontSize: 34, fontWeight: FontWeight.bold);
 
   static const TextStyle headline1 = TextStyle(
     fontSize: 24.0,
@@ -17,6 +16,11 @@ class Styles {
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle subtitle1 = TextStyle(
+      fontSize: 18.0,
+      fontWeight: FontWeight.normal,
+      fontStyle: FontStyle.italic);
 
   static const TextStyle bodyText1 = TextStyle(
     fontSize: 16.0,

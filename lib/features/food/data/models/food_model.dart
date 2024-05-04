@@ -1,3 +1,4 @@
+import 'package:proteam_app/core/utils/string_conversion_helpers.dart';
 import 'package:proteam_app/features/food/domain/entities/food_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -63,13 +64,22 @@ class FoodModel extends FoodEntity {
       final nutrientValues = json['foodNutrients'] as List<dynamic>;
 
       final calories = double.parse(nutrientValues
-          .firstWhere((nutrient) => nutrient['nutrientName'] == 'Energy')['value'].toString());
-      final carbs = double.parse(nutrientValues.firstWhere((nutrient) =>
-          nutrient['nutrientName'] == 'Carbohydrate, by difference')['value'].toString());
+          .firstWhere(
+              (nutrient) => nutrient['nutrientName'] == 'Energy')['value']
+          .toString());
+      final carbs = double.parse(nutrientValues
+          .firstWhere((nutrient) =>
+              nutrient['nutrientName'] ==
+              'Carbohydrate, by difference')['value']
+          .toString());
       final protein = double.parse(nutrientValues
-          .firstWhere((nutrient) => nutrient['nutrientName'] == 'Protein')['value'].toString());
-      final fat = double.parse(nutrientValues.firstWhere(
-          (nutrient) => nutrient['nutrientName'] == 'Total lipid (fat)')['value'].toString());
+          .firstWhere(
+              (nutrient) => nutrient['nutrientName'] == 'Protein')['value']
+          .toString());
+      final fat = double.parse(nutrientValues
+          .firstWhere((nutrient) =>
+              nutrient['nutrientName'] == 'Total lipid (fat)')['value']
+          .toString());
 
       // The serving sizes for FNDDS nutrients is 100 g
       const servingSize = 100.0;
@@ -77,7 +87,7 @@ class FoodModel extends FoodEntity {
 
       // Populate fields specific to FNDDS data type
       return FoodModel(
-          name: json['description'],
+          name: formatPascalCase(json['description']),
           servingSize: servingSize,
           servingSizeUnit: servingSizeUnit,
           calories: calories,
@@ -96,18 +106,27 @@ class FoodModel extends FoodEntity {
       final nutrientValues = json['foodNutrients'] as List<dynamic>;
 
       final calories = double.parse(nutrientValues
-          .firstWhere((nutrient) => nutrient['nutrientName'] == 'Energy')['value'].toString());
-      final carbs = double.parse(nutrientValues.firstWhere(
-          (nutrient) => nutrient['nutrientName'] == 'Carbohydrate, by difference')['value'].toString());
+          .firstWhere(
+              (nutrient) => nutrient['nutrientName'] == 'Energy')['value']
+          .toString());
+      final carbs = double.parse(nutrientValues
+          .firstWhere((nutrient) =>
+              nutrient['nutrientName'] ==
+              'Carbohydrate, by difference')['value']
+          .toString());
       final protein = double.parse(nutrientValues
-          .firstWhere((nutrient) => nutrient['nutrientName'] == 'Protein')['value'].toString());
+          .firstWhere(
+              (nutrient) => nutrient['nutrientName'] == 'Protein')['value']
+          .toString());
       final fat = double.parse(nutrientValues
-          .firstWhere((nutrient) => nutrient['nutrientName'] == 'Total lipid (fat)')['value'].toString());
+          .firstWhere((nutrient) =>
+              nutrient['nutrientName'] == 'Total lipid (fat)')['value']
+          .toString());
 
       // Populate fields specific to Branded data type
       return FoodModel(
-          name: json['description'],
-          brand: json['brandName'],
+          name: formatPascalCase(json['description']),
+          brand: formatPascalCase(json['brandName']),
           servingSize: double.parse(json['servingSize'].toString()),
           servingSizeUnit: json['servingSizeUnit'],
           calories: calories,

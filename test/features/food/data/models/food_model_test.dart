@@ -31,6 +31,7 @@ void main() {
     // * Arrange
     final Map<String, dynamic> expected = {
       'name': 'Banana',
+      'brand': null,
       'servingSize': 1,
       'servingSizeUnit': 'unit',
       'calories': 110,

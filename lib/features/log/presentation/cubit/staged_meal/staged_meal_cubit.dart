@@ -9,26 +9,30 @@ part 'staged_meal_state.dart';
 
 // Manages state of the staged meal when user is adding/removing foods to create a meal
 class StagedMealCubit extends Cubit<StagedMealState> {
-  // The staged meal - always starts empty
-  final MealEntryEntity stagedMeal = MealEntryEntity(foodEntries: []);
-
   final LogMealUseCase logMealUseCase;
 
   StagedMealCubit({required this.logMealUseCase}) : super(StagedMealInitial());
 
   // Stage a food in the staged meal
-  void stageFood({required FoodEntity food, required double quantity}) {
+  void stageFood(
+      {required MealEntryEntity stagedMeal,
+      required FoodEntity food,
+      required double quantity}) {
     try {
       // Convert the [FoodEntity] and the servings amount to a [FoodEntryEntity]
       final foodEntry = FoodEntryEntity(
         name: food.name,
-        calories: (food.calories * (quantity / food.servingSize)).toInt(),
-        carbs: (food.carbs * (quantity / food.servingSize)).toInt(),
-        protein: (food.protein * (quantity / food.servingSize)).toInt(),
-        fat: (food.fat * (quantity / food.servingSize)).toInt(),
+        brand: food.brand,
+        servingSize: food.servingSize,
+        servingSizeUnit: food.servingSizeUnit,
+        actualCalories: (food.calories * (quantity / food.servingSize)),
+        actualCarbs: (food.carbs * (quantity / food.servingSize)),
+        actualProtein: (food.protein * (quantity / food.servingSize)),
+        actualFat: (food.fat * (quantity / food.servingSize)),
         quantity: quantity,
         // Assume same units for now
-        quantityUnits: food.servingSizeUnit,
+        quantityUnits: food.servingSizeUnit, calories: food.calories,
+        carbs: food.carbs, protein: food.protein, fat: food.fat,
       );
 
       // Add the [FoodEntryEntity] to the staged meal
@@ -42,15 +46,15 @@ class StagedMealCubit extends Cubit<StagedMealState> {
   }
 
   // Log the staged meal by calling the [logMeal] usecase
-  Future<void> logMeal() async {
+  Future<void> logMeal(MealEntryEntity stagedMeal) async {
     try {
       emit(StagedMealLogInProgress());
 
       // TODO: check if staged meal is valid? (not empty)... or handle this later in the call flow
       final result = await logMealUseCase.call(stagedMeal);
 
-      result.fold((l) => emit(StagedMealLogFailure()), (r) => emit(StagedMealLogSuccess()));
-
+      result.fold((l) => emit(StagedMealLogFailure()),
+          (r) => emit(StagedMealLogSuccess()));
     } catch (_) {
       emit(StagedMealLogFailure());
     }

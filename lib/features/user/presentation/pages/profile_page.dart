@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
                 ]),
                 const SizedBox(height: 20),
-                Text(user.username, style: Styles.title1),
+                Text(user.username, style: Styles.title2),
                 Text(user.email, style: Styles.bodyText2)
               ],
             ),

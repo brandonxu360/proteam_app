@@ -47,7 +47,7 @@ class _SignInPageState extends State<SignInPage> {
                       SizedBox(height: 20),
                       Text(
                         'Proteam',
-                        style: Styles.title1,
+                        style: Styles.title2,
                       )
                     ],
                   ),
