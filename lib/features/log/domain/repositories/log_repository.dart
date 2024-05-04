@@ -11,5 +11,5 @@ abstract class LogRepository {
   Future<Either<Failure, void>> logMeal(MealEntryEntity meal);
 
   // Get the meals for a given day given a date (format: xx/xx/xxxx)
-  Future<Either<Failure, List<MealEntryEntity>>> getMealsInDay(String date);
+  Future<Either<Failure, List<MealEntryEntity>>> getMealsInDay(String date, String uid);
 }

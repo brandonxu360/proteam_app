@@ -9,15 +9,15 @@ part 'staged_meal_state.dart';
 
 // Manages state of the staged meal when user is adding/removing foods to create a meal
 class StagedMealCubit extends Cubit<StagedMealState> {
-  // The staged meal - always starts empty
-  final MealEntryEntity stagedMeal = MealEntryEntity(foodEntries: []);
-
   final LogMealUseCase logMealUseCase;
 
   StagedMealCubit({required this.logMealUseCase}) : super(StagedMealInitial());
 
   // Stage a food in the staged meal
-  void stageFood({required FoodEntity food, required double quantity}) {
+  void stageFood(
+      {required MealEntryEntity stagedMeal,
+      required FoodEntity food,
+      required double quantity}) {
     try {
       // Convert the [FoodEntity] and the servings amount to a [FoodEntryEntity]
       final foodEntry = FoodEntryEntity(
@@ -46,7 +46,7 @@ class StagedMealCubit extends Cubit<StagedMealState> {
   }
 
   // Log the staged meal by calling the [logMeal] usecase
-  Future<void> logMeal() async {
+  Future<void> logMeal(MealEntryEntity stagedMeal) async {
     try {
       emit(StagedMealLogInProgress());
 

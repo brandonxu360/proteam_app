@@ -32,7 +32,11 @@ class _HomePageState extends State<HomePage> {
 
     screenIndex = 0;
 
-    homePages = [const DashboardPage(), const LogPage(), const ProfilePage()];
+    homePages = [
+      const DashboardPage(),
+      LogPage(uid: widget.uid),
+      const ProfilePage()
+    ];
     super.initState();
   }
 

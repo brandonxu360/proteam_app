@@ -11,9 +11,15 @@ class LogRepositoryImpl implements LogRepository {
   LogRepositoryImpl({required this.logRemoteDataSource});
 
   @override
-  Future<Either<Failure, List<MealEntryEntity>>> getMealsInDay(String date) {
-    // TODO: implement getMealsInDay
-    throw UnimplementedError();
+  Future<Either<Failure, List<MealEntryEntity>>> getMealsInDay(
+      String date, String uid) async {
+    try {
+      final meals = await logRemoteDataSource.getMealsInDay(date, uid);
+
+      return Right(meals);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 
   @override

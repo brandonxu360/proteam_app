@@ -10,5 +10,5 @@ abstract class LogRemoteDataSource {
   Future<void> logMeal(MealEntryEntity meal);
 
   // Get the meals for a given day given a date (format: xx/xx/xxxx)
-  Future<List<MealEntryEntity>> getMealsInDay(String date);
+  Future<List<MealEntryEntity>> getMealsInDay(String date, String uid);
 }
